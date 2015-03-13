@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}Add New Site{% endblock head_title %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>Add Site</h4></div>
+        <div class="panel-body">
+            <form method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    {% include 'includes/formfields/textfield.html' with fieldname='hostname' label='Hostname:' formfield=form.hostname placeholder='Hostname (e.g. www.example.com)' %}
+                    {% include 'includes/formfields/selectfield.html' with fieldname='group' label='Group:' formfield=form.group %}
+                    {% url 'site_list' as cancelurl %}
+                    {% include 'includes/formfields/submitcancel.html' with submittext='Add Site' canceltext='Cancel' cancelurl=cancelurl %}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

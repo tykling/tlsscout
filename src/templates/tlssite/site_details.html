@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}Site Details{% endblock head_title %}
+
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>Site Details</h4></div>
+    <div class="panel-body">
+        <p>This site is a member of the group <b>{{ site.group.name }}</b> which is being checked every <b>{{ site.group.interval_hours }} hours</b>. 
+        Checks of this site <b>{% if site.group.publish %}will{% else %}will not{% endif %}</b> be published on the SSL Labs website.</p>
+    </div>
+</div>
+{% include 'includes/check_panel.html' with checks=site.checks %}
+{% endblock content %}

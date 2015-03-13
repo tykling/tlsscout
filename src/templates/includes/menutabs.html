@@ -1,0 +1,12 @@
+  <ul class="nav navbar-nav">
+    {% if user.is_authenticated or ALLOW_ANONYMOUS_VIEWING %}
+        {% url 'site_list' as sitelisturl %}
+        {% url 'group_list' as grouplisturl %}
+        {% url 'tag_list' as taglisturl %}
+        {% url 'dashboard' as dashboardurl %}
+        <li class="{% if request.path == dashboardurl %}active{% endif %}"><a href="{{ dashboardurl }}">Dashboard</a></li>
+        <li class="{% if request.path == sitelisturl %}active{% endif %}"><a href="{{ sitelisturl }}">Sites</a></li>
+        <li class="{% if request.path == grouplisturl %}active{% endif %}"><a href="{{ grouplisturl }}">Groups</a></li>
+        <li class="{% if request.path == taglisturl %}active{% endif %}"><a href="{{ taglisturl }}">Tags</a></li>
+    {% endif %}
+  </ul>

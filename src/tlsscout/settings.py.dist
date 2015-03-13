@@ -1,0 +1,140 @@
+"""
+Django settings for tlsscout project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/1.7/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/1.7/ref/settings/
+"""
+from django.conf import global_settings
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+
+# debug settings
+SECRET_KEY = ''
+DEBUG = False
+TEMPLATE_DEBUG = False
+ALLOWED_HOSTS = [ 'example.com' ]
+
+
+# Application definition
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # required for allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # pretty forms
+    'bootstrapform',
+
+    # tlsscout apps
+    'userprofile',
+    'dashboard',
+    'tlssite',
+    'group',
+)
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    # these three are required by allauth
+    "django.core.context_processors.request",
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
+)
+
+AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+ROOT_URLCONF = 'tlsscout.urls'
+
+WSGI_APPLICATION = 'tlsscout.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+# static files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
+# sites framework
+SITE_ID = 1
+
+# email settings
+EMAIL_HOST='mailhost.example.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='mymailuser'
+EMAIL_HOST_PASSWORD='mymailpassword'
+EMAIL_USE_TLS=True
+EMAIL_FROM='noreply@example.com'
+DEFAULT_FROM_EMAIL=EMAIL_FROM
+
+# allauth settings
+# http://django-allauth.readthedocs.org/en/latest/configuration.html
+ACCOUNT_EMAIL_VERIFICATION="mandatory"
+ACCOUNT_AUTHENTICATION_METHOD="username_email"
+ACCOUNT_EMAIL_REQUIRED=True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}

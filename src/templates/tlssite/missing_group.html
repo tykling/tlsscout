@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}No Groups Found{% endblock head_title %}
+
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>No Groups Found</h4></div>
+    <div class="panel-body">
+        <p>No groups found. You need to add one or more groups before adding sites.</p>
+        <p><a href="{% url 'group_add' %}" class="btn btn-success"><i class="fa fa-plus"></i> Add Group</a></p>
+    </div>
+</div>
+{% endblock content %}

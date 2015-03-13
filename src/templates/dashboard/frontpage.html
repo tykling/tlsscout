@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}{% trans "tlsscout" %}{% endblock head_title %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>tlsscout</h1>
+    <p>With tlsscout you can configure automatic periodic checks of your websites using the API of the excellent <a href="{{ SSLLABS_SCANNERURL }}">SSL Labs scanner</a>, with notifications when something changes.</p>
+    <p>All use of the SSL Labs API is subject to the <a href="{{ SSLLABS_TERMSURL }}">terms and conditions</a> listed on their website.</p>
+    <p><a class="btn btn-primary btn-lg" href="{% url 'account_signup' %}">Create account</a> or <a class="btn btn-primary btn-lg" href="{% url 'account_login' %}">Log In</a></p>
+</div>
+{% endblock content %}
+
+
+{% block extra_body %}
+{% endblock extra_body %}

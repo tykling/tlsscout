@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}Groups{% endblock head_title %}
+
+{% block content %}
+{% include 'includes/group_panel.html' with groups=groups %}
+{% endblock content %}

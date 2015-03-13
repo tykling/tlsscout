@@ -1,0 +1,59 @@
+{% load relative_date_hours %}
+
+{% if not tableonly %}
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{ headline|default:"Sites" }}</h4></div>
+    <div class="panel-body">
+{% endif %}
+{% if not sites %}
+        <p>No sites defined.</p>
+{% else %}
+        <table class="table table-striped table-hover" style="font-size:larger; vertical-align:middle;">
+            <thead>
+                <tr>
+                    <th>Hostname</th>
+                    <th>Site Group</th>
+                    <th>Last Check Finished</th>
+                    <th>Last Check Result</th>
+                    <th>Next Check Begins</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for site in sites %}
+                <tr>
+                    <td><a href="{% url 'site_details' siteid=site.id %}">{{ site.hostname }}</a></td>
+                    <td><a href="{% url 'group_details' groupid=site.group.id %}">{{ site.group }}</a></td>
+                    {% if site.checks.count > 0 %}
+                        <td>{{ site.checks.all.0.finish_time }}</td>
+                        {% if site.checks.all.0.results.all.count == 0 %}
+                            <td>{{ site.checks.all.0.status }}</td>
+                        {% else %}
+                            <td>{{ site.checks.all.0.results.all|join:"/" }}
+                        {% endif %}
+                        {% if site.checks.all.0.finish_time %}
+                            <td>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours }}</td>
+                        {% else %}
+                            <td>{{ site.group.interval_hours }} hours interval</td>
+                        {% endif %}
+                    {% else %}
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>Immediately</td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'site_details' siteid=site.id %}" class="btn btn-info"><i class="fa fa-list"></i> Checks</a> 
+                        <a href="{% url 'site_edit' siteid=site.id %}" class="btn btn-info"><i class="fa fa-edit"></i>Edit</a> 
+                        <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a> 
+                        <a href="{% url 'site_check' siteid=site.id %}" class="btn btn-warning"><i class="fa fa-arrow-right"></i> Check Now</a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+        <p><a href="{% url 'site_add' %}" class="btn btn-success"><i class="fa fa-plus"></i> Add New Site</a></p>
+{% if not tableonly %}
+    </div>
+</div>
+{% endif %}

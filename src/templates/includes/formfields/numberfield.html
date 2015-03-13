@@ -1,0 +1,7 @@
+<div class="form-group {% if formfield.errors %}has-error{% endif %}">
+    <label for="id_{{ fieldname }}" class="col-lg-2 control-label">{{ label }}</label>
+    <div class="col-lg-10">
+        {% if formfield.errors %} <span class="text-error">{{ formfield.errors|join:", " }}</span>{% endif %}
+        <input value="{{ formfield.value|default_if_none:""  }}" type="number" name="{{ fieldname }}" class="form-control" id="id_{{ fieldname }}" placeholder="{{ placeholder }}">
+    </div>
+</div>
