@@ -27,21 +27,24 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # required for allauth
     'django.contrib.sites',
+
+    # allauth
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
 
     # pretty forms
     'bootstrapform',
+
+    #'debug_toolbar',
 
     # tlsscout apps
     'userprofile',
     'dashboard',
     'tlssite',
     'group',
+    'sitecheck',
+    'ssllabs',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,7 +69,6 @@ AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
 )
 
 ROOT_URLCONF = 'tlsscout.urls'
-
 WSGI_APPLICATION = 'tlsscout.wsgi.application'
 
 
@@ -103,14 +105,27 @@ EMAIL_PORT=587
 EMAIL_HOST_USER='mymailuser'
 EMAIL_HOST_PASSWORD='mymailpassword'
 EMAIL_USE_TLS=True
-EMAIL_FROM='noreply@example.com'
+EMAIL_FROM='noreply@example.com'     # this email is included in the useragent when using the SSL Labs API
 DEFAULT_FROM_EMAIL=EMAIL_FROM
+
+# ssllabs API settings
+SSLLABS_APIURL="https://api.ssllabs.com/api/v2/"
+SSLLABS_TERMSURL="https://www.ssllabs.com/about/terms.html"
+SSLLABS_SCANNERURL="https://www.ssllabs.com/ssltest/"
+SSLLABS_POLITE_CONCURRENT_CHECKS = 1
+
+# lower limit for the check interval
+MIN_CHECK_INTERVAL_HOURS = 6
+
+# allow anonymous / unauthenticated users to view data without logging in ?
+ALLOW_ANONYMOUS_VIEWING = True
 
 # allauth settings
 # http://django-allauth.readthedocs.org/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION="mandatory"
 ACCOUNT_AUTHENTICATION_METHOD="username_email"
 ACCOUNT_EMAIL_REQUIRED=True
+LOGIN_REDIRECT_URL = "/"
 
 LOGGING = {
     'version': 1,

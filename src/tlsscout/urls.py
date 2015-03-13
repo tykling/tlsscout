@@ -8,10 +8,6 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^$', 'dashboard.views.dashboard', name='dashboard'),
 
-    # profile
-    url(r'^accounts/profile/$', 'userprofile.views.profile_show', name='profile_show'),
-    url(r'^accounts/profile/edit/$', 'userprofile.views.profile_edit', name='profile_edit'),
-
     # sites
     url(r'^sites/$', 'tlssite.views.site_list', name='site_list'),
     url(r'^sites/add/$', 'tlssite.views.site_add_edit', name='site_add'),
