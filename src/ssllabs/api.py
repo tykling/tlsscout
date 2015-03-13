@@ -110,19 +110,13 @@ def __ApiCall(method, payload=None, sitecheck=None):
 
 
 def __SaveRequest(request, sitecheck, uuid):
-    request_headers = ""
-    for key,value in request.request.headers.iteritems():
-        request_headers += "%s: %s\n" % (key,value)
-    response_headers = ""
-    for key,value in request.headers.iteritems():
-        response_headers += "%s: %s\n" % (key,value)
     requestlog = RequestLog(
         sitecheck=sitecheck,
         request_url=request.url,
-        request_headers=request_headers,
+        request_headers=json.dumps(dict(request.request.headers)),
         response_code=request.status_code,
-        response_headers=response_headers,
-        response_body=request.content,
+        response_headers=json.dumps(dict(request.headers)),
+        response_body=request.text,
         uuid=uuid
     )
     requestlog.save()
