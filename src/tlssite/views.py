@@ -37,7 +37,7 @@ def site_add_edit(request,siteid=None):
 
     if form.is_valid():
         site = form.save()
-        return HttpResponseRedirect(reverse('site_list'))
+        return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': site.group.id}))
 
     return render(request, template, {
         'form': form,
