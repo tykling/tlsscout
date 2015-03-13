@@ -38,8 +38,6 @@ class Command(BaseCommand):
         ### see if any regular new checks need to be started
         self.stdout.write("- starting regular checks...")
         self.__StartRegularChecks()
-        
-
 
 
     ### clean up method
@@ -154,6 +152,7 @@ class Command(BaseCommand):
             self.stdout.write("finished updating check of site %s" % check.site.hostname)
             continue
 
+
     ### method to parse result json
     def __ParseResultJson(self, sitecheck, hostinfo):
         # parse result dict into SiteCheckResult model
@@ -166,7 +165,8 @@ class Command(BaseCommand):
                     sitecheck = sitecheck,
                     serverip = endpoint['ipAddress']
                 )
-            result.serverhostname = endpoint['serverName']
+            if 'serverName' in endpoint:
+                result.serverhostname = endpoint['serverName']
 
             if 'grade' in endpoint:
                 result.grade = endpoint['grade']
@@ -182,6 +182,7 @@ class Command(BaseCommand):
                 result.status_details_message = endpoint['statusDetailsMessage']
             else:
                 result.status_details_message = None
+
             ### save 
             result.save()
 
