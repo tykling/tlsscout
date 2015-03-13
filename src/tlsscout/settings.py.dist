@@ -61,6 +61,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.request",
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
+    "tlsscout.template_context_processors.anon_access",
 )
 
 AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
