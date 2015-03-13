@@ -21,28 +21,28 @@ class Command(BaseCommand):
             self.stdout.write("%s already exists, exiting" % pidfile)
             sys.exit()
         else:
-            self.stdout.write("writing pidfile")
+            #self.stdout.write("writing pidfile")
             file(pidfile, 'w').write(pid)
             atexit.register(self.__RmPidFile, pidfile)
     
         ### update the status of running checks first, to see if anything finished
-        self.stdout.write("- update status of running checks...")
+        #self.stdout.write("- update status of running checks...")
         self.__UpdateRunningChecks()
 
 
         ### see if any new urgent checks need to be started
-        self.stdout.write("- starting urgent checks...")
+        #self.stdout.write("- starting urgent checks...")
         self.__StartUrgentChecks()
 
 
         ### see if any regular new checks need to be started
-        self.stdout.write("- starting regular checks...")
+        #self.stdout.write("- starting regular checks...")
         self.__StartRegularChecks()
 
 
     ### clean up method
     def __RmPidFile(self, pidfile):
-        self.stdout.write("deleting pidfile")
+        #self.stdout.write("deleting pidfile")
         os.unlink(pidfile)
 
 
