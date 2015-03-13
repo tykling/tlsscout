@@ -26,6 +26,3 @@ urlpatterns = patterns('',
  
     # tags
 )
-
-### import signals from signals.py (for profile autocreation on user creation)
-import signals

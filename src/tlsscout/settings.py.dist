@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     #'debug_toolbar',
 
     # tlsscout apps
-    'userprofile',
     'dashboard',
     'tlssite',
     'group',
