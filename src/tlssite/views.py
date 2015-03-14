@@ -10,6 +10,8 @@ from sitecheck.models import SiteCheck, SiteCheckResult
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.conf import settings
 from ssllabs.wrappers import StartScan
+from taggit.models import Tag
+
 
 ### list sites
 @user_passes_test(logged_in_or_anon_allowed, login_url=reverse_lazy('account_login'))
@@ -77,3 +79,26 @@ def site_check(request, siteid):
     check = SiteCheck(site=site, urgent=True)
     check.save()
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
+
+
+def tag_details(request, tagslug):
+    tag = get_object_or_404(Tag, slug=tagslug)
+    sites = Site.objects.filter(tags__slug=tagslug)
+    
+    return render(request, 'tlssite/tag_sitelist.html', {
+        'sites': sites,
+        'tag': tag,
+    })
+
+def tag_list(request):
+    # tags = Tag.objects.all()
+    ### XXX why the hell is it so retarded to get all tags
+    tags = Site.objects.all()[0].tags.all()
+    if Site.objects.all().count() > 1:
+        for site in Site.objects.all():
+            tags |= site.tags.all()
+    ### remove duplicates
+    tags = tags.distinct()
+    return render(request, 'tlssite/tag_taglist.html', {
+        'tags': tags
+    })

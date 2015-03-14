@@ -1,13 +1,17 @@
 from tlssite.models import Site
 from django import forms
 import re
+from taggit.forms import TagWidget
 
 
 ### add/edit site form
 class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
-        fields = ('hostname','group')
+        fields = ('hostname','group', 'tags')
+        widgets = {
+            'tags': TagWidget(),
+        }
 
     def clean(self):
         ### get cleaned_data

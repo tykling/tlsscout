@@ -25,4 +25,6 @@ urlpatterns = patterns('',
     url(r'^groups/(?P<groupid>\w+)/check/$', 'group.views.group_check', name='group_check'),
  
     # tags
+    url(r'^tags/(?P<tagslug>.+)/$', 'tlssite.views.tag_details', name='tag_details'),
+    url(r'^tags/$', 'tlssite.views.tag_list', name='tag_list'),
 )

@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>Tags</h4></div>
+    <div class="panel-body">
+    {% if not tags %}
+        <p>No tags defined.</p>
+    {% else %}
+        <table class="table table-striped table-hover" style="font-size:larger; vertical-align:middle;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Sites</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tag in tags %}
+                    <tr>
+                        <td><a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a></td>
+                        <td>{% for site in tag.taggit_taggeditem_items.all %}<a href="{% url 'site_details' siteid=site.content_object.id %}">{{ site.content_object.hostname }}</a> {% endfor %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block head_title %}Tags{% endblock head_title %}
+{% block content %}
+{% include 'includes/tag_panel.html' with tags=tags %}
+{% endblock content %}

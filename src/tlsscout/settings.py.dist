@@ -38,6 +38,9 @@ INSTALLED_APPS = (
 
     #'debug_toolbar',
 
+    # tags
+    'taggit',
+
     # tlsscout apps
     'dashboard',
     'tlssite',
