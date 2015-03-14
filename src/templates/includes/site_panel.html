@@ -45,16 +45,20 @@
                     {% endif %}
                     <td>
                         <a href="{% url 'site_details' siteid=site.id %}" class="btn btn-info"><i class="fa fa-list"></i> Checks</a> 
-                        <a href="{% url 'site_edit' siteid=site.id %}" class="btn btn-info"><i class="fa fa-edit"></i>Edit</a> 
-                        <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a> 
-                        <a href="{% url 'site_check' siteid=site.id %}" class="btn btn-warning"><i class="fa fa-arrow-right"></i> Check!</a> 
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'site_edit' siteid=site.id %}" class="btn btn-info"><i class="fa fa-edit"></i>Edit</a> 
+                            <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a> 
+                            <a href="{% url 'site_check' siteid=site.id %}" class="btn btn-warning"><i class="fa fa-arrow-right"></i> Check!</a> 
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 {% endif %}
-        <p><a href="{% url 'site_add' %}" class="btn btn-success"><i class="fa fa-plus"></i> Add New Site</a></p>
+{% if user.is_authenticated %}
+    <p><a href="{% url 'site_add' %}" class="btn btn-success"><i class="fa fa-plus"></i> Add New Site</a></p>
+{% endif %}
 {% if not tableonly %}
     </div>
 </div>
