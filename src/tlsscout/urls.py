@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^sites/(?P<siteid>\w+)/edit/$', 'tlssite.views.site_add_edit', name='site_edit'),
     url(r'^sites/(?P<siteid>\w+)/delete/$', 'tlssite.views.site_delete', name='site_delete'),
     url(r'^sites/(?P<siteid>\w+)/check/$', 'tlssite.views.site_check', name='site_check'),
+    url(r'^sites/(?P<siteid>\w+)/nagios/$', 'tlssite.views.site_nagios', name='site_nagios'),
 
     # groups
     url(r'^groups/$', 'group.views.group_list', name='group_list'),

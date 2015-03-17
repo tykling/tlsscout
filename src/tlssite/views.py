@@ -102,3 +102,12 @@ def tag_list(request):
     return render(request, 'tlssite/tag_taglist.html', {
         'tags': tags
     })
+
+def site_nagios(request, siteid):
+    site = get_object_or_404(Site, id=siteid)
+    latestcheck = site.checks.filter(finish_time__isnull=False).latest('finish_time')
+    if latestcheck:
+        results = [str(result) for result in latestcheck.results.all()]
+        if results:
+            return HttpResponse("/".join(results), content_type='text/plain')
+    return HttpResponse("N/A", content_type='text/plain')
