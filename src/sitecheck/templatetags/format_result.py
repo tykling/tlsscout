@@ -26,7 +26,7 @@ def format_result(value):
             labelclass="label-danger"
         else:
             labelclass="label-default"
-            result.grade = "<i class='fa fa-frown-o fa-lg'></i>"
+            result.grade = "<i class='fa fa-frown-o'></i>"
             if result.status_message and result.status_message != "":
                 output += "<div style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></div>" % (result.status_message, labelclass, result.grade)
         output += "<div style='font-size: 36px'><span class='label %s'>%s</span></div>" % (labelclass, result.grade)
