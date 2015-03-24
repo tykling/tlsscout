@@ -10,26 +10,35 @@ def format_result(value):
     for result in value:
         if result.grade == "A+":
             labelclass="label-success"
+            gradenumber = 8
         elif result.grade == "A":
             labelclass="label-success"
+            gradenumber = 7
         elif result.grade == "A-":
             labelclass="label-success"
+            gradenumber = 6
         elif result.grade == "B":
             labelclass="label-warning"
+            gradenumber = 5
         elif result.grade == "C":
             labelclass="label-warning"
+            gradenumber = 4
         elif result.grade == "D":
             labelclass="label-danger"
+            gradenumber = 3
         elif result.grade == "E":
             labelclass="label-danger"
+            gradenumber = 2
         elif result.grade == "F":
             labelclass="label-danger"
+            gradenumber = 1
         else:
             labelclass="label-default"
-            result.grade = "<i class='fa fa-frown-o'></i>"
+            gradenumber = 0
+            result.grade = "X"
             if result.status_message and result.status_message != "":
-                output += "<div style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></div>" % (result.status_message, labelclass, result.grade)
+                output += "<span style='display: none'>%s</span><div style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></div>" % (gradenumber, result.status_message, labelclass, result.grade)
                 continue
-        output += "<div style='font-size: 36px'><span class='label %s'>%s</span></div>" % (labelclass, result.grade)
+        output += "<span style='display: none'>%s</span><div style='font-size: 36px'><span class='label %s'>%s</span></div>" % (gradenumber, labelclass, result.grade)
     return output
 
