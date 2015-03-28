@@ -12,6 +12,7 @@
                     {% csrf_token %}
                     {% include 'includes/formfields/textfield.html' with fieldname='hostname' label='Hostname:' formfield=form.hostname placeholder='Hostname (e.g. www.example.com)' %}
                     {% include 'includes/formfields/selectfield.html' with fieldname='group' label='Group:' formfield=form.group %}
+                    {% include 'includes/formfields/djangofield.html' with label='Tags:' formfield=form.tags %}
                     {% url 'site_list' as cancelurl %}
                     {% include 'includes/formfields/submitcancel.html' with submittext='Add Site' canceltext='Cancel' cancelurl=cancelurl %}
                 </fieldset>
