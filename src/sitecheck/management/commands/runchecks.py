@@ -5,6 +5,7 @@ from datetime import timedelta
 from sitecheck.models import SiteCheck, SiteCheckResult
 from ssllabs.wrappers import StartScan, GetResults
 from tlssite.models import Site
+from tlsscout.email import tlsscout_alert
 import os, socket, sys, datetime, atexit, json
 import tempfile
 
@@ -141,6 +142,8 @@ class Command(BaseCommand):
                 check.save()
                 self.__ParseResultJson(sitecheck=check, hostinfo=hostinfo)
                 self.stdout.write("check of site %s is finished!" % check.site.hostname)
+                ### check for changes compared to previous check, send alerts if enabled
+                self.__CheckForChanges(site=check.site)
             else:
                 ### hostinfo field has an unknown value, error
                 check.status = "APIERROR"
@@ -185,4 +188,33 @@ class Command(BaseCommand):
 
             ### save 
             result.save()
+
+
+    ### method to compare check results and send alerts where relevant
+    def __CheckForChange(self, site):
+        ### find out if more than one check exists for this site
+        if checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).count() > 1:
+            ### get the two latest checks
+            checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).order_by('-finish_time')[:2]
+            oldcheck = checks[0]
+            newcheck = checks[1]
+            
+            ### compare the number of results
+            oldresults = SiteCheckResult.objects.filter(sitecheck=oldcheck).order_by('grade')
+            newresults = SiteCheckResult.objects.filter(sitecheck=newcheck).order_by('grade')
+            if oldresults.count() != newresults.count():
+                ### something changed, send alert
+                tlsscout_alert(self, site)
+                return
+            
+            ### same number of results, compare the grade
+            i=0
+            for result in oldresults:
+                if result.grade != newresults[i].grade:
+                    tlsscout_alert(self, site)
+                    return
+                i+=1
+
+        ### no changes detected
+        return
 

@@ -37,8 +37,8 @@ def format_result(value):
             gradenumber = 0
             result.grade = "X"
             if result.status_message and result.status_message != "":
-                output += "<span style='display: none'>%s</span><div style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></div>" % (gradenumber, result.status_message, labelclass, result.grade)
+                output += "<span style='display: none'>%s</span><span style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></span>&nbsp;" % (gradenumber, result.status_message, labelclass, result.grade)
                 continue
-        output += "<span style='display: none'>%s</span><div style='font-size: 36px'><span class='label %s'>%s</span></div>" % (gradenumber, labelclass, result.grade)
+        output += "<span style='display: none'>%s</span><span style='font-size: 36px'><span class='label %s'>%s</span></span>&nbsp;" % (gradenumber, labelclass, result.grade)
     return output
 

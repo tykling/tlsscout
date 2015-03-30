@@ -1,5 +1,6 @@
 {% load relative_date_hours %}
 {% load format_result %}
+{% load humanize %}
 
 {% if not tableonly %}
 <div class="panel panel-default">
@@ -13,11 +14,12 @@
             <thead>
                 <tr>
                     <th>Hostname</th>
-                    <th>Site Group</th>
+                    <th>Group</th>
                     <th>Tags</th>
-                    <th>Last Check Finished</th>
-                    <th>Last Check Result</th>
-                    <th>Next Check Begins</th>
+                    <th>Last Checked</th>
+                    <th>Last Change</th>
+                    <th>SSL Labs Grade</th>
+                    <th>Next Check</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -26,18 +28,21 @@
                 <tr>
                     <td><a href="{% url 'site_details' siteid=site.id %}">{{ site.hostname }}</a></td>
                     <td><a href="{% url 'group_details' groupid=site.group.id %}">{{ site.group }}</a></td>
-                    <td>{% for tag in site.tags.all %}<a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a> {% endfor %}</td>
+                    <td>{% for tag in site.tags.all %}<a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a><br>{% endfor %}</td>
                     {% if site.checks.count > 0 %}
-                        <td>{{ site.checks.all.0.finish_time }}</td>
+                        <td>{{ site.checks.all.0.finish_time|naturaltime }}</td>
+                        <td>{{ site.last_change|naturaltime }}</td>
+
                         {% if site.checks.all.0.results.all.count == 0 %}
                             <td>{{ site.checks.all.0.status }}</td>
                         {% else %}
                             <td>{{ site.checks.all.0.results.all|format_result|safe }}</td>
                         {% endif %}
+
                         {% if site.checks.all.0.finish_time %}
-                            <td>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours }}</td>
+                            <td>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|naturaltime }}</td>
                         {% else %}
-                            <td>{{ site.group.interval_hours }} hours interval</td>
+                            <td>{{ site.group.interval_hours }} hours after the running check finishes</td>
                         {% endif %}
                     {% else %}
                         <td>N/A</td>
@@ -45,7 +50,7 @@
                         <td>Immediately</td>
                     {% endif %}
                     <td>
-                        <a href="{% url 'site_details' siteid=site.id %}" class="btn btn-info"><i class="fa fa-list"></i> Checks</a> 
+                        <a href="{% url 'site_details' siteid=site.id %}" class="btn btn-info"><i class="fa fa-list"></i> Details</a> 
                         {% if user.is_authenticated %}
                             <a href="{% url 'site_edit' siteid=site.id %}" class="btn btn-info"><i class="fa fa-edit"></i>Edit</a> 
                             <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a> 

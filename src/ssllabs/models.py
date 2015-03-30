@@ -24,3 +24,4 @@ class RequestLog(models.Model):
 
     class Meta:
         ordering = ['-datetime']
+
