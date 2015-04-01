@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        (b'tlssite', b'__first__'),
     ]
 
     operations = [
@@ -20,6 +21,7 @@ class Migration(migrations.Migration):
                 ('finish_time', models.DateTimeField(null=True)),
                 ('json_result', models.TextField(null=True)),
                 ('status_message', models.TextField(null=True)),
+                ('site', models.ForeignKey(related_name='checks', to='tlssite.Site')),
             ],
             options={
                 'ordering': ['-finish_time'],
