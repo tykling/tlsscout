@@ -93,12 +93,15 @@ def tag_details(request, tagslug):
 def tag_list(request):
     # tags = Tag.objects.all()
     ### XXX why the hell is it so retarded to get all tags
-    tags = Site.objects.all()[0].tags.all()
-    if Site.objects.all().count() > 1:
-        for site in Site.objects.all():
-            tags |= site.tags.all()
-    ### remove duplicates
-    tags = tags.distinct()
+    if Site.objects.all().count() == 0:
+        tags = None
+    else:
+        tags = Site.objects.all()[0].tags.all()
+        if Site.objects.all().count() > 1:
+            for site in Site.objects.all():
+                tags |= site.tags.all()
+        ### remove duplicates
+        tags = tags.distinct()
     return render(request, 'tlssite/tag_taglist.html', {
         'tags': tags
     })
