@@ -1,6 +1,6 @@
 <div class="form-group">
     <div class="col-lg-10 col-lg-offset-2">
         <button type="submit" class="btn {{ submitclass|default:"btn-success" }}"><i class="fa {{ submiticon|default:"fa-check" }}"></i> {{ submittext }}</button>
-        <a href="{{ cancelurl }}" class="btn btn-default"><i class="fa fa-remove"></i> {{ canceltext }}</a>
+        <a href="{{ cancelurl }}" class="btn btn-default"><i class="fa {{ removeicon|default:'fa-remove' }}"></i> {{ canceltext }}</a>
     </div>
 </div>

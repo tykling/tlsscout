@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load url from future %}
+{% load get_site_alerting %}
 {% block head_title %}{{ site.hostname }}{% endblock head_title %}
 
 {% block content %}
@@ -11,7 +12,13 @@
         being checked every <b>{{ site.group.interval_hours }} hours</b>. 
         Checks of this site <b>{% if site.group.publish %}will{% else %}will not{% endif %}</b> be 
         published on the SSL Labs website.</p>
+        {% if site|get_site_alerting:request.user %}
+            <p>Alerting is <b>enabled</b> for you for this site. <a href="{% url 'disable_site_alert' siteid=site.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a>.</p>
+        {% else %}
+            <p>Alerting is <b>not enabled</b> for you for this site. <a href="{% url 'enable_site_alert' siteid=site.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a>.</p>
+        {% endif %}
     </div>
 </div>
 {% include 'includes/check_panel.html' with checks=site.checks %}
+{% include 'includes/alert_panel.html' with alerts=site.alerts.all headline="Configured Alerts for "|add:site.hostname type="Site" %}
 {% endblock content %}

@@ -10,7 +10,6 @@ from sitecheck.models import SiteCheck, SiteCheckResult
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.conf import settings
 from ssllabs.wrappers import StartScan
-from taggit.models import Tag
 
 
 ### list sites
@@ -67,7 +66,7 @@ def site_delete(request, siteid):
 def site_details(request, siteid):
     ### if this site doesn't exist return 404
     site = get_object_or_404(Site, id=siteid)
-    
+
     return render(request, 'tlssite/site_details.html', {
         'site': site,
     })
@@ -80,31 +79,6 @@ def site_check(request, siteid):
     check.save()
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
-
-def tag_details(request, tagslug):
-    tag = get_object_or_404(Tag, slug=tagslug)
-    sites = Site.objects.filter(tags__slug=tagslug)
-    
-    return render(request, 'tlssite/tag_sitelist.html', {
-        'sites': sites,
-        'tag': tag,
-    })
-
-def tag_list(request):
-    # tags = Tag.objects.all()
-    ### XXX why the hell is it so retarded to get all tags
-    if Site.objects.all().count() == 0:
-        tags = None
-    else:
-        tags = Site.objects.all()[0].tags.all()
-        if Site.objects.all().count() > 1:
-            for site in Site.objects.all():
-                tags |= site.tags.all()
-        ### remove duplicates
-        tags = tags.distinct()
-    return render(request, 'tlssite/tag_taglist.html', {
-        'tags': tags
-    })
 
 def site_nagios(request, siteid):
     site = get_object_or_404(Site, id=siteid)

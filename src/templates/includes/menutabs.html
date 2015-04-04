@@ -9,4 +9,8 @@
         <li class="{% if request.path == grouplisturl %}active{% endif %}"><a href="{{ grouplisturl }}">Groups</a></li>
         <li class="{% if request.path == taglisturl %}active{% endif %}"><a href="{{ taglisturl }}">Tags</a></li>
     {% endif %}
+    {% if user.is_authenticated %}
+        {% url 'alert_list' as alerturl %}
+        <li class="{% if request.path == alerturl %}active{% endif %}"><a href="{{ alerturl }}">Alerts</a></li>
+    {% endif %}
   </ul>

@@ -1,3 +1,5 @@
+{% load get_tag_alerting %}
+
 <div class="panel panel-default">
     <div class="panel-heading"><h4>Tags</h4></div>
     <div class="panel-body">
@@ -9,6 +11,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Sites</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,6 +19,15 @@
                     <tr>
                         <td><a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a></td>
                         <td>{% for site in tag.taggit_taggeditem_items.all %}<a href="{% url 'site_details' siteid=site.content_object.id %}">{{ site.content_object.hostname }}</a> {% endfor %}</td>
+                        <td>
+                            {% if user.is_authenticated %}
+                                {% if tag|get_tag_alerting:request.user %}
+                                    <a href="{% url 'disable_tag_alert' tagslug=tag.slug %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                                {% else %}
+                                    <a href="{% url 'enable_tag_alert' tagslug=tag.slug %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
+                                {% endif %}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

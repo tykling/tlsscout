@@ -1,3 +1,4 @@
+{% load get_group_alerting %}
 <div class="panel panel-default">
     <div class="panel-heading"><h4>Groups</h4></div>
     <div class="panel-body">
@@ -22,12 +23,16 @@
                         <td class="text-center">{{ group.sites.count }}</td>
                         <td class="text-center">{% if group.publish %}<span class="label label-success"><i class="fa fa-check"></i> Yes</span>{% else %}<span class="label label-danger"><i class="fa fa-remove"></i> No</span>{% endif %}</td>
                         <td>
-                            <a href="{% url 'group_details' groupid=group.id %}" class="btn btn-info"><i class="fa fa-list"></i> Sites</a>
+                            <a href="{% url 'group_details' groupid=group.id %}" class="btn btn-info btn-xs"><i class="fa fa-list"></i> Sites</a>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'group_edit' groupid=group.id %}" class="btn btn-info"><i class="fa fa-edit"></i> Edit</a>
-                                <a href="{% url 'group_check' groupid=group.id %}" class="btn btn-warning"><i class="fa fa-arrow-right"></i> Check Now</a>
+                                <a href="{% url 'group_edit' groupid=group.id %}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a>
                                 {% if group.sites.count == 0 %}
-                                    <a href="{% url 'group_delete' groupid=group.id %}" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a> 
+                                    <a href="{% url 'group_delete' groupid=group.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a> 
+                                {% endif %}
+                                {% if group|get_group_alerting:request.user %}
+                                    <a href="{% url 'disable_group_alert' groupid=group.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                                {% else %}
+                                    <a href="{% url 'enable_group_alert' groupid=group.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                                 {% endif %}
                             {% endif %}
                         </td>

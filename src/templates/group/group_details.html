@@ -4,7 +4,7 @@
 {% block head_title %}Group Details{% endblock head_title %}
 {% block content %}
 <div class="panel panel-default">
-    <div class="panel-heading"><h4>{{ group.name }}</h4></div>
+    <div class="panel-heading"><h4>Details for group {{ group.name }}</h4></div>
     <div class="panel-body">
         <ul>
             <li>This group of sites is being checked every <span class="label label-success">{{ group.interval_hours }} hours</span></li>
