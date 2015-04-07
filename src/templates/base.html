@@ -30,11 +30,17 @@
           {% include "includes/menutabs.html" %}
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
-            <li><a href="/"><i class="fa fa-user"></i> Logged in as {{ user }}</a></li>
-            <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user"></i> {{ user }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url 'account_email' %}"><i class="fa fa-envelope"></i> Manage Emails</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                  </ul>
+                </li>
             {% else %}
-            <li><a href="{% url 'account_login' %}"><i class="fa fa-sign-in"></i> Sign In</a></li>
-            <li><a href="{% url 'account_signup' %}"><i class="fa fa-star"></i> Sign Up</a></li>
+                <li><a href="{% url 'account_login' %}"><i class="fa fa-sign-in"></i> Sign In</a></li>
+                <li><a href="{% url 'account_signup' %}"><i class="fa fa-star"></i> Sign Up</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
