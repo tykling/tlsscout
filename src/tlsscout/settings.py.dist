@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'group',
     'sitecheck',
     'ssllabs',
+    'alert',
+    'tag',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,7 +66,6 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     # these three are required by allauth
     "django.core.context_processors.request",
     "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
     "tlsscout.template_context_processors.anon_access",
 )
 
