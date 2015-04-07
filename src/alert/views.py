@@ -29,19 +29,18 @@ def enable_site_alert(request, siteid):
     })
 
 
-def disable_site_alert(request, siteid):
-    site = get_object_or_404(Site, id=siteid)
-    alert = get_object_or_404(SiteAlert, site=site, user=request.user)
+def disable_site_alert(request, alertid):
+    alert = get_object_or_404(SiteAlert, id=alertid)
     form = DisableSiteAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the site %s' % site.hostname)
-        return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
+        messages.success(request, 'Alerting has been disabled for the site %s' % alert.site.hostname)
+        return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': alert.site.id}))
 
     return render(request, 'alert/disable_site_alert.html', {
         'form': form,
-        'site': site
+        'site': alert.site
     })
 
 
@@ -65,19 +64,19 @@ def enable_tag_alert(request, tagslug):
         'tag': tag
     })
 
-def disable_tag_alert(request, tagslug):
-    tag = get_object_or_404(Tag, slug=tagslug)
-    alert = get_object_or_404(TagAlert, tag=tag, user=request.user)
+
+def disable_tag_alert(request, alertid):
+    alert = get_object_or_404(TagAlert, id=alertid)
     form = DisableTagAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the tag %s' % tag)
+        messages.success(request, 'Alerting has been disabled for the tag %s' % alert.tag)
         return HttpResponseRedirect(reverse('tag_list'))
 
     return render(request, 'alert/disable_tag_alert.html', {
         'form': form,
-        'tag': tag
+        'tag': alert.tag
     })
 
 
@@ -102,19 +101,18 @@ def enable_group_alert(request, groupid):
     })
 
 
-def disable_group_alert(request, groupid):
-    group = get_object_or_404(Group, id=groupid)
-    alert = get_object_or_404(GroupAlert, group=group, user=request.user)
+def disable_group_alert(request, alertid):
+    alert = get_object_or_404(GroupAlert, id=alertid)
     form = DisableGroupAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the group %s' % group.name)
-        return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': group.id}))
+        messages.success(request, 'Alerting has been disabled for the group %s' % alert.group.name)
+        return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, 'alert/disable_group_alert.html', {
         'form': form,
-        'group': group
+        'group': alert.group
     })
 
 
@@ -123,9 +121,15 @@ def alert_list_user(request):
 
 
 def alert_list(request, user=None):
-    sitealerts = SiteAlert.objects.filter(user=user if user else request.user)
-    groupalerts = GroupAlert.objects.filter(user=user if user else request.user)
-    tagalerts = TagAlert.objects.filter(user=user if user else request.user)
+    if user:
+        sitealerts = SiteAlert.objects.filter(user=user)
+        groupalerts = GroupAlert.objects.filter(user=user)
+        tagalerts = TagAlert.objects.filter(user=user)
+    else:
+        sitealerts = SiteAlert.objects.all()
+        groupalerts = GroupAlert.objects.all()
+        tagalerts = TagAlert.objects.all()
+
 
     return render(request, 'alert/alert_list.html', {
         'sitealerts': sitealerts,

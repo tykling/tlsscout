@@ -6,7 +6,7 @@ from alert.models import GroupAlert
 def get_group_alerting(group, user):
     try:
         groupalert = GroupAlert.objects.get(group=group, user=user)
-        return True
+        return groupalert.id
     except GroupAlert.DoesNotExist:
         return False
 

@@ -22,7 +22,7 @@
                         <td>
                             {% if user.is_authenticated %}
                                 {% if tag|get_tag_alerting:request.user %}
-                                    <a href="{% url 'disable_tag_alert' tagslug=tag.slug %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                                    <a href="{% url 'disable_tag_alert' alertid=tag|get_tag_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
                                 {% else %}
                                     <a href="{% url 'enable_tag_alert' tagslug=tag.slug %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                                 {% endif %}

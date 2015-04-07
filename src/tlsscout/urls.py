@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     url(r'^tags/(?P<tagslug>\w+)/alert/$', 'alert.views.enable_tag_alert', name='enable_tag_alert'),
     url(r'^groups/(?P<groupid>\w+)/alert/$', 'alert.views.enable_group_alert', name='enable_group_alert'),
     
-    url(r'^sites/(?P<siteid>\w+)/alert/disable/$', 'alert.views.disable_site_alert', name='disable_site_alert'),
-    url(r'^tags/(?P<tagslug>\w+)/alert/disable/$', 'alert.views.disable_tag_alert', name='disable_tag_alert'),
-    url(r'^groups/(?P<groupid>\w+)/alert/disable/$', 'alert.views.disable_group_alert', name='disable_group_alert'),
+    url(r'^sitealerts/(?P<alertid>\w+)/disable/$', 'alert.views.disable_site_alert', name='disable_site_alert'),
+    url(r'^tagalerts/(?P<alertid>\w+)/disable/$', 'alert.views.disable_tag_alert', name='disable_tag_alert'),
+    url(r'^groupalerts/(?P<alertid>\w+)/disable/$', 'alert.views.disable_group_alert', name='disable_group_alert'),
 )

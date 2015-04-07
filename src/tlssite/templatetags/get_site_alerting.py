@@ -6,7 +6,7 @@ from alert.models import SiteAlert
 def get_site_alerting(site, user):
     try:
         sitealert = SiteAlert.objects.get(site=site, user=user)
-        return True
+        return sitealert.id
     except SiteAlert.DoesNotExist:
         return False
 

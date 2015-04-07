@@ -58,7 +58,7 @@
                         <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a> 
                         <a href="{% url 'site_check' siteid=site.id %}" class="btn btn-warning btn-xs"><i class="fa fa-arrow-right"></i> Check!</a> 
                         {% if site|get_site_alerting:request.user %}
-                            <a href="{% url 'disable_site_alert' siteid=site.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                            <a href="{% url 'disable_site_alert' alertid=site|get_site_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
                         {% else %}
                             <a href="{% url 'enable_site_alert' siteid=site.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                         {% endif %}

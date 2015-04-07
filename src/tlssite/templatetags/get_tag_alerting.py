@@ -6,7 +6,7 @@ from alert.models import TagAlert
 def get_tag_alerting(tag, user):
     try:
         tagalert = TagAlert.objects.get(tag=tag, user=user)
-        return True
+        return tagalert.id
     except TagAlert.DoesNotExist:
         return False
 
