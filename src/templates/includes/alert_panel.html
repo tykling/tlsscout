@@ -18,16 +18,16 @@
                     <tr>
                         {% if type == "Site" %}
                             <td>{{ alert.site.hostname }}</td>
-                            {% if not filteruser %}<td>{{ alert.user }}</td>{% endif %}
+                            {% if not filteruser %}<td>{% if alert.user == request.user %}<i class="fa fa-user"></i> {% endif %}{{ alert.user }}</td>{% endif %}
                             <td><a href="{% url 'disable_site_alert' alertid=alert.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a></td>
                         {% elif type == "Group" %}
                             <td>{{ alert.group }}</td>
-                            {% if not filteruser %}<td>{{ alert.user }}</td>{% endif %}
+                            {% if not filteruser %}<td>{% if alert.user == request.user %}<i class="fa fa-user"></i> {% endif %}{{ alert.user }}</td>{% endif %}
                             <td class="text-center">{{ alert.group.sites.all.count }}</td>
                             <td><a href="{% url 'disable_group_alert' alertid=alert.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a></td>
                         {% elif type == "Tag" %}
                             <td>{{ alert.tag }}</td>
-                            {% if not filteruser %}<td>{{ alert.user }}</td>{% endif %}
+                            {% if not filteruser %}<td>{% if alert.user == request.user %}<i class="fa fa-user"></i> {% endif %}{{ alert.user }}</td>{% endif %}
                             <td class="text-center">{{ alert.tag.taggit_taggeditem_items.all.count }}</td>
                             <td><a href="{% url 'disable_tag_alert' alertid=alert.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a></td>
                         {% endif %}
