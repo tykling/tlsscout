@@ -211,7 +211,7 @@ class Command(BaseCommand):
             i=0
             for result in oldresults:
                 if result.grade != newresults[i].grade:
-                    tlsscout_alert(self, site)
+                    tlsscout_alert(self, oldcheck, newcheck)
                     return
                 i+=1
 

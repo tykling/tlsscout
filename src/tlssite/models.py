@@ -2,6 +2,7 @@ from django.db import models
 from group.models import Group
 from taggit.managers import TaggableManager
 from django.utils.functional import cached_property
+from django.contrib.auth.models import User
 
 ### contains all site definitions    
 class Site(models.Model):
@@ -10,7 +11,6 @@ class Site(models.Model):
     last_change = models.DateTimeField(null=True)
     tags = TaggableManager(blank=True)
 
-    #@cached_property
     def recursive_alerting(self, user):
         from alert.models import SiteAlert, TagAlert, GroupAlert
 
@@ -38,6 +38,14 @@ class Site(models.Model):
 
         ### neither site, group or tag alerting for this site
         return False
+
+    def get_alert_users(self):
+        from alert.models import SiteAlert, TagAlert, GroupAlert
+        sitealertusers = User.objects.filter(id__in=SiteAlert.objects.filter(site=self).values('user'))
+        groupalertusers = User.objects.filter(id__in=GroupAlert.objects.filter(group=self.group).values('user'))
+        tagalertusers = User.objects.filter(id__in=TagAlert.objects.filter(tag__name__in=self.tags.all()).values('user'))
+        alertusers = sitealertusers | groupalertusers | tagalertusers
+        return alertusers.distinct()
 
     def __unicode__(self):
         return "%s (%s)" % (self.hostname, self.group)

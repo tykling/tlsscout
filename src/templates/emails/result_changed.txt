@@ -1,0 +1,28 @@
+{% load url from future %}
+
+TLSScout result changed!
+-------------------------
+While checking the site {{ site.hostname }} using the 
+SSL Labs API we encountered a different result than the 
+last time we checked.
+
+Old result:
+------------
+{{ oldresultstring }}
+
+New result:
+------------
+{{ newresultstring }}
+
+
+You are receiving this email because alerting is enabled for 
+this site for your user. To change your alerting settings go to 
+{% url 'alert_list_user' %}
+
+To see the check/result history for this site go to 
+{% url 'site_details' siteid=site.id %}
+
+
+Best regards,
+
+Your Friendly TLSScout Engine
