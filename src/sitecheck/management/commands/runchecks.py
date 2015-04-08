@@ -191,9 +191,9 @@ class Command(BaseCommand):
 
 
     ### method to compare check results and send alerts where relevant
-    def __CheckForChange(self, site):
+    def __CheckForChanges(self, site):
         ### find out if more than one check exists for this site
-        if checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).count() > 1:
+        if SiteCheck.objects.filter(site=site, finish_time__isnull=False).count() > 1:
             ### get the two latest checks
             checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).order_by('-finish_time')[:2]
             oldcheck = checks[0]
