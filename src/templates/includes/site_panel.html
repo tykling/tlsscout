@@ -43,7 +43,11 @@
                     {% if site.checks.all.0.finish_time %}
                         <td>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|naturaltime }}</td>
                     {% else %}
-                        <td>{{ site.group.interval_hours }} hours after the running check finishes</td>
+                        {% if site.checks.all.0.start_time %}
+                            <td>Running</td>
+                        {% else %}
+                            <td>Queued</td>
+                        {% endif %}
                     {% endif %}
                 {% else %}
                     <td>N/A</td>
