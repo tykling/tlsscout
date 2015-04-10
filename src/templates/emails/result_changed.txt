@@ -1,5 +1,4 @@
 {% load url from future %}
-
 TLSScout result changed!
 -------------------------
 While checking the site {{ site.hostname }} using the 
@@ -17,10 +16,10 @@ New result:
 
 You are receiving this email because alerting is enabled for 
 this site for your user. To change your alerting settings go to 
-{% url 'alert_list_user' %}
+{{ baseurl }}{% url 'alert_list_user' %}
 
 To see the check/result history for this site go to 
-{% url 'site_details' siteid=site.id %}
+{{ baseurl }}{% url 'site_details' siteid=site.id %}
 
 
 Best regards,

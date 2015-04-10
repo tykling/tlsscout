@@ -204,14 +204,14 @@ class Command(BaseCommand):
             newresults = SiteCheckResult.objects.filter(sitecheck=newcheck).order_by('grade')
             if oldresults.count() != newresults.count():
                 ### something changed, send alert
-                tlsscout_alert(self, site)
+                tlsscout_alert(oldcheck, newcheck)
                 return
             
             ### same number of results, compare the grade
             i=0
             for result in oldresults:
                 if result.grade != newresults[i].grade:
-                    tlsscout_alert(self, oldcheck, newcheck)
+                    tlsscout_alert(oldcheck, newcheck)
                     return
                 i+=1
 
