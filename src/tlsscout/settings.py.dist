@@ -11,13 +11,30 @@ from django.conf import global_settings
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+##############################################################################
+################## tlsscout settings, edit these #############################
+SECRET_KEY = 'make this a long random string, ~100 chars'
+ALLOWED_HOSTS = [ 'example.com' ] # set to your tlsscout hostname
 
-# debug settings
-SECRET_KEY = ''
-DEBUG = False
-TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = [ 'example.com' ]
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
+# email settings
+EMAIL_HOST='mailhost.example.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='mymailuser'
+EMAIL_HOST_PASSWORD='mymailpassword'
+EMAIL_USE_TLS=True
+EMAIL_FROM='noreply@example.com'     # NOTE: this email is included in the useragent when using the SSL Labs API
+
+##############################################################################
+################### regular Django settings below here #######################
 
 # Application definition
 INSTALLED_APPS = (
@@ -76,16 +93,8 @@ AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + (
 ROOT_URLCONF = 'tlsscout.urls'
 WSGI_APPLICATION = 'tlsscout.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -104,14 +113,8 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # sites framework
 SITE_ID = 1
 
-# email settings
-EMAIL_HOST='mailhost.example.com'
-EMAIL_PORT=587
-EMAIL_HOST_USER='mymailuser'
-EMAIL_HOST_PASSWORD='mymailpassword'
-EMAIL_USE_TLS=True
-EMAIL_FROM='noreply@example.com'     # this email is included in the useragent when using the SSL Labs API
 DEFAULT_FROM_EMAIL=EMAIL_FROM
+SERVER_EMAIL¶=EMAIL_FROM
 
 # ssllabs API settings
 SSLLABS_APIURL="https://api.ssllabs.com/api/v2/"
@@ -120,7 +123,7 @@ SSLLABS_SCANNERURL="https://www.ssllabs.com/ssltest/"
 SSLLABS_POLITE_CONCURRENT_CHECKS = 1
 
 # lower limit for the check interval
-MIN_CHECK_INTERVAL_HOURS = 6
+MIN_CHECK_INTERVAL_HOURS = 24
 
 # allow anonymous / unauthenticated users to view data without logging in ?
 ALLOW_ANONYMOUS_VIEWING = True
