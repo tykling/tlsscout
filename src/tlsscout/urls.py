@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     # tags
     url(r'^tags/(?P<tagslug>\w+)/$', 'tag.views.tag_details', name='tag_details'),
     url(r'^tags/$', 'tag.views.tag_list', name='tag_list'),
+    url(r'^tags/(?P<tagslug>\w+)/check/$', 'tag.views.tag_check', name='tag_check'),
 
     # alerts
     url(r'^alerts/$', 'alert.views.alert_list', name='alert_list'),

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from sitecheck.models import SiteCheck, SiteCheckResult
 from django.conf import settings
 from tlsscout.decorators import logged_in_or_anon_allowed
+from django.contrib import messages
 
 ### add/edit group function
 @login_required
@@ -21,6 +22,10 @@ def group_add_edit(request,groupid=None):
         template = 'group/group_add.html'
 
     if form.is_valid():
+        if groupid:
+            messages.success(request, 'The group %s has been updated.' % group.name)
+        else:
+            messages.success(request, 'The group %s has been created.' % group.name)
         form.save()
         return HttpResponseRedirect(reverse('group_list'))
 
@@ -44,6 +49,7 @@ def group_delete(request, groupid):
         form = DeleteGroupForm(request.POST, instance=group)
         if form.is_valid():
             group.delete()
+            messages.success(request, 'The group %s has been deleted.' % group.name)
             return HttpResponseRedirect(reverse('group_list'))
         else:
             return HttpResponseRedirect(reverse('group_list'))
@@ -85,8 +91,6 @@ def group_check(request, groupid):
     for site in sites:
         check = SiteCheck(site=site, urgent=True)
         check.save()
-    return render(request, 'group/group_details.html', {
-        'group': group
-    })
-
+    messages.success(request, 'Scheduled an urgent check for all %s sites in the group %s' % (sites.count(), group.name))
+    return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': groupid}))
 

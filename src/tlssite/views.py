@@ -10,6 +10,7 @@ from sitecheck.models import SiteCheck, SiteCheckResult
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.conf import settings
 from ssllabs.wrappers import StartScan
+from django.contrib import messages
 
 
 ### list sites
@@ -38,7 +39,11 @@ def site_add_edit(request,siteid=None):
 
     if form.is_valid():
         site = form.save()
-        return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': site.group.id}))
+        if siteid:
+            messages.success(request, 'The site %s has been updated.' % site.name)
+        else:
+            messages.success(request, 'The site %s has been created.' % site.name)
+        return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
     return render(request, template, {
         'form': form,
@@ -54,6 +59,7 @@ def site_delete(request, siteid):
 
     if form.is_valid():
         site.delete()
+        messages.success(request, 'The site %s has been deleted.' % site.name)
         return HttpResponseRedirect(reverse('site_list'))
 
     return render(request, 'tlssite/site_delete_confirm.html', {
@@ -77,6 +83,7 @@ def site_check(request, siteid):
     site = get_object_or_404(Site, id=siteid)
     check = SiteCheck(site=site, urgent=True)
     check.save()
+    messages.success(request, 'Scheduled an urgent check for the site %s' % site.name)
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
 
@@ -88,3 +95,4 @@ def site_nagios(request, siteid):
         if results:
             return HttpResponse("/".join(results), content_type='text/plain')
     return HttpResponse("N/A", content_type='text/plain')
+
