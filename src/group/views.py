@@ -20,6 +20,7 @@ def group_add_edit(request,groupid=None):
         form = GroupForm(request.POST or None, instance=group)
         template = 'group_edit.html'
     else:
+        group = None
         form = GroupForm(request.POST or None)
         template = 'group_add.html'
 
@@ -32,7 +33,8 @@ def group_add_edit(request,groupid=None):
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, template, {
-        'form': form
+        'form': form,
+        'group': group
     })
 
 
