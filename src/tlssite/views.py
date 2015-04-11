@@ -77,13 +77,17 @@ def site_details(request, siteid):
         'site': site,
     })
 
+
 ### urgent site check
 @login_required
 def site_check(request, siteid):
     site = get_object_or_404(Site, id=siteid)
-    check = SiteCheck(site=site, urgent=True)
-    check.save()
-    messages.success(request, 'Scheduled an urgent check for the site %s' % site.hostname)
+    if not start_urgent_check_ok(site):
+        messages.error(request, 'A check of this site is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.')
+    else:
+        check = SiteCheck(site=site, urgent=True)
+        check.save()
+        messages.success(request, 'Scheduled an urgent check for the site %s' % site.hostname)
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
 
@@ -95,4 +99,20 @@ def site_nagios(request, siteid):
         if results:
             return HttpResponse("/".join(results), content_type='text/plain')
     return HttpResponse("N/A", content_type='text/plain')
+
+
+def start_urgent_check_ok(site):    
+    ### check if a check is already running for this site
+    try:
+        check = SiteCheck.objects.get(site=site, start_time__isnull=False, finish_time__isnull=True)
+        return False
+    except SiteCheck.DoesNotExist:
+        pass
+    
+    ### check if an urgent check is already scheduled for this site
+    try:
+        check = SiteCheck.objects.get(site=site, start_time__isnull=True, finish_time__isnull=True, urgent=True)
+        return False
+    except SiteCheck.DoesNotExist:
+        pass
 

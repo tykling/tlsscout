@@ -9,6 +9,8 @@ from sitecheck.models import SiteCheck, SiteCheckResult
 from django.conf import settings
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.contrib import messages
+from tlssite.views import start_urgent_check_ok
+
 
 ### add/edit group function
 @login_required
@@ -89,8 +91,11 @@ def group_check(request, groupid):
     group = get_object_or_404(Group, id=groupid)
     sites = Site.objects.filter(group=group)
     for site in sites:
-        check = SiteCheck(site=site, urgent=True)
-        check.save()
+        if not start_urgent_check_ok(site):
+            messages.error(request, 'A check of the site %s is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
+        else:
+            check = SiteCheck(site=site, urgent=True)
+            check.save()
     messages.success(request, 'Scheduled an urgent check for all %s sites in the group %s' % (sites.count(), group.name))
     return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': groupid}))
 

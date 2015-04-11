@@ -130,7 +130,6 @@ def alert_list(request, user=None):
         groupalerts = GroupAlert.objects.all()
         tagalerts = TagAlert.objects.all()
 
-
     return render(request, 'alert_list.html', {
         'sitealerts': sitealerts,
         'groupalerts': groupalerts,

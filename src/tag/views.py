@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from taggit.models import Tag
 from django.contrib import messages
 from sitecheck.models import SiteCheck
+from tlssite.views import start_urgent_check_ok
 
 
 @user_passes_test(logged_in_or_anon_allowed, login_url=reverse_lazy('account_login'))
@@ -44,8 +45,11 @@ def tag_check(request, tagslug):
     tag = get_object_or_404(Tag, slug=tagslug)
     sites = Site.objects.filter(tags__slug=tagslug)
     for site in sites:
-        check = SiteCheck(site=site, urgent=True)
-        check.save()
+        if not start_urgent_check_ok(site):
+            messages.error(request, 'A check of the site %s is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
+        else:
+            check = SiteCheck(site=site, urgent=True)
+            check.save()
     messages.success(request, 'Scheduled an urgent check for all %s sites tagged with %s' % (sites.count(), tagslug))
     return HttpResponseRedirect(reverse('tag_details', kwargs={'tagslug': tagslug}))
 
