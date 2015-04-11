@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponse, HttpResponseServerError
 from django.shortcuts import render, get_object_or_404
 from tlssite.models import Site
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -5,6 +6,8 @@ from tlsscout.decorators import logged_in_or_anon_allowed
 from django.core.urlresolvers import reverse, reverse_lazy
 from taggit.models import Tag
 from django.contrib import messages
+from sitecheck.models import SiteCheck
+
 
 @user_passes_test(logged_in_or_anon_allowed, login_url=reverse_lazy('account_login'))
 def tag_details(request, tagslug):
@@ -15,6 +18,7 @@ def tag_details(request, tagslug):
         'sites': sites,
         'tag': tag,
     })
+
 
 @user_passes_test(logged_in_or_anon_allowed, login_url=reverse_lazy('account_login'))
 def tag_list(request):
@@ -44,3 +48,4 @@ def tag_check(request, tagslug):
         check.save()
     messages.success(request, 'Scheduled an urgent check for all %s sites tagged with %s' % (sites.count(), tagslug))
     return HttpResponseRedirect(reverse('tag_details', kwargs={'tagslug': tagslug}))
+

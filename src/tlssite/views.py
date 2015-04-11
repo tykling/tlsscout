@@ -18,7 +18,7 @@ from django.contrib import messages
 def site_list(request):
     ### get a list of sites
     sites = Site.objects.all()
-    return render(request, 'tlssite/site_list.html', {
+    return render(request, 'site_list.html', {
         'sites': sites,
     })
 
@@ -27,15 +27,15 @@ def site_list(request):
 @login_required
 def site_add_edit(request,siteid=None):
     if not Group.objects.all().exists():
-        return render(request, "tlssite/missing_group.html")
+        return render(request, "missing_group.html")
 
     if siteid:
         site = get_object_or_404(Site, id=siteid)
         form = SiteForm(request.POST or None, instance=site)
-        template = 'tlssite/site_edit.html'
+        template = 'site_edit.html'
     else:
         form = SiteForm(request.POST or None)
-        template = 'tlssite/site_add.html'
+        template = 'site_add.html'
 
     if form.is_valid():
         site = form.save()
@@ -62,7 +62,7 @@ def site_delete(request, siteid):
         messages.success(request, 'The site %s has been deleted.' % site.name)
         return HttpResponseRedirect(reverse('site_list'))
 
-    return render(request, 'tlssite/site_delete_confirm.html', {
+    return render(request, 'site_delete_confirm.html', {
         'form': form
     })
 
@@ -73,7 +73,7 @@ def site_details(request, siteid):
     ### if this site doesn't exist return 404
     site = get_object_or_404(Site, id=siteid)
 
-    return render(request, 'tlssite/site_details.html', {
+    return render(request, 'site_details.html', {
         'site': site,
     })
 
@@ -83,7 +83,7 @@ def site_check(request, siteid):
     site = get_object_or_404(Site, id=siteid)
     check = SiteCheck(site=site, urgent=True)
     check.save()
-    messages.success(request, 'Scheduled an urgent check for the site %s' % site.name)
+    messages.success(request, 'Scheduled an urgent check for the site %s' % site.hostname)
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
 

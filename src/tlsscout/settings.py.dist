@@ -109,12 +109,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    },
+]
 
 # sites framework
 SITE_ID = 1
 
 DEFAULT_FROM_EMAIL=EMAIL_FROM
-SERVER_EMAIL¶=EMAIL_FROM
+SERVER_EMAIL=EMAIL_FROM
 
 # ssllabs API settings
 SSLLABS_APIURL="https://api.ssllabs.com/api/v2/"

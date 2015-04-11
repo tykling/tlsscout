@@ -26,8 +26,9 @@
                                 {% else %}
                                     <a href="{% url 'enable_tag_alert' tagslug=tag.slug %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                                 {% endif %}
+                            <a href="{% url 'tag_check' tagslug=tag.slug %}" class="btn btn-warning btn-xs"><i class="fa fa-bell"></i> Check!</a>
                             {% endif %}
-                        </td>
+                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
