@@ -65,7 +65,8 @@ def site_delete(request, siteid):
         return HttpResponseRedirect(reverse('site_list'))
 
     return render(request, 'site_delete_confirm.html', {
-        'form': form
+        'form': form,
+        'site': site
     })
 
 

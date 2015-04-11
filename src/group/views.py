@@ -85,6 +85,11 @@ def group_details(request,groupid):
 def group_check(request, groupid):
     group = get_object_or_404(Group, id=groupid)
     form = ScheduleGroupCheckForm(request.POST or None, instance=group)
+    if group.sites.count() == 0:
+        return render(request, 'group_check_zero_sites.html', {
+            'group': group,
+        })
+
     if form.is_valid():
         sites = Site.objects.filter(group=group)
         checkcounter = 0
