@@ -16,10 +16,10 @@ def group_add_edit(request,groupid=None):
     if groupid:
         group = get_object_or_404(Group, id=groupid)
         form = GroupForm(request.POST or None, instance=group)
-        template = 'group/group_edit.html'
+        template = 'group_edit.html'
     else:
         form = GroupForm(request.POST or None)
-        template = 'group/group_add.html'
+        template = 'group_add.html'
 
     if form.is_valid():
         if groupid:
@@ -41,7 +41,7 @@ def group_delete(request, groupid):
     group = get_object_or_404(Group, id=groupid)
 
     if group.sites.count() > 0:
-        return render(request, 'group/group_delete_fail.html', {
+        return render(request, 'group_delete_fail.html', {
             'group': group
         })
     
@@ -56,7 +56,7 @@ def group_delete(request, groupid):
     else:
         form = DeleteGroupForm(instance=group)
 
-    return render(request, 'group/group_delete_confirm.html', {
+    return render(request, 'group_delete_confirm.html', {
         'group': group,
         'form': form
     })
@@ -68,7 +68,7 @@ def group_list(request):
     ### get a list of groups
     groups = Group.objects.all()
 
-    return render(request, 'group/group_list.html', {
+    return render(request, 'group_list.html', {
         'groups': groups,
     })
 
@@ -78,7 +78,7 @@ def group_list(request):
 def group_details(request,groupid):
     ### if this group doesn't exist return 404
     group = get_object_or_404(Group, id=groupid)    
-    return render(request, 'group/group_details.html', {
+    return render(request, 'group_details.html', {
         'group': group
     })
 

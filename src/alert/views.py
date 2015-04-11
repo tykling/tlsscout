@@ -23,7 +23,7 @@ def enable_site_alert(request, siteid):
             messages.success(request, 'Alerting has now been enabled for the site %s' % site.hostname)
             return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
-    return render(request, 'alert/enable_site_alert.html', {
+    return render(request, 'enable_site_alert.html', {
         'form': form,
         'site': site
     })
@@ -38,7 +38,7 @@ def disable_site_alert(request, alertid):
         messages.success(request, 'Alerting has been disabled for the site %s' % alert.site.hostname)
         return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': alert.site.id}))
 
-    return render(request, 'alert/disable_site_alert.html', {
+    return render(request, 'disable_site_alert.html', {
         'form': form,
         'site': alert.site
     })
@@ -59,7 +59,7 @@ def enable_tag_alert(request, tagslug):
             messages.success(request, 'Alerting has now been enabled for the tag %s' % tag)
             return HttpResponseRedirect(reverse('tag_list'))
 
-    return render(request, 'alert/enable_tag_alert.html', {
+    return render(request, 'enable_tag_alert.html', {
         'form': form,
         'tag': tag
     })
@@ -74,7 +74,7 @@ def disable_tag_alert(request, alertid):
         messages.success(request, 'Alerting has been disabled for the tag %s' % alert.tag)
         return HttpResponseRedirect(reverse('tag_list'))
 
-    return render(request, 'alert/disable_tag_alert.html', {
+    return render(request, 'disable_tag_alert.html', {
         'form': form,
         'tag': alert.tag
     })
@@ -95,7 +95,7 @@ def enable_group_alert(request, groupid):
             messages.success(request, 'Alerting has now been enabled for the group %s' % group.name)
             return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': group.id}))
 
-    return render(request, 'alert/enable_group_alert.html', {
+    return render(request, 'enable_group_alert.html', {
         'form': form,
         'group': group
     })
@@ -110,7 +110,7 @@ def disable_group_alert(request, alertid):
         messages.success(request, 'Alerting has been disabled for the group %s' % alert.group.name)
         return HttpResponseRedirect(reverse('group_list'))
 
-    return render(request, 'alert/disable_group_alert.html', {
+    return render(request, 'disable_group_alert.html', {
         'form': form,
         'group': alert.group
     })
@@ -131,7 +131,7 @@ def alert_list(request, user=None):
         tagalerts = TagAlert.objects.all()
 
 
-    return render(request, 'alert/alert_list.html', {
+    return render(request, 'alert_list.html', {
         'sitealerts': sitealerts,
         'groupalerts': groupalerts,
         'tagalerts': tagalerts,

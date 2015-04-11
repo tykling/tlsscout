@@ -14,7 +14,7 @@ def tag_details(request, tagslug):
     tag = get_object_or_404(Tag, slug=tagslug)
     sites = Site.objects.filter(tags__slug=tagslug)
     
-    return render(request, 'tag/tag_sitelist.html', {
+    return render(request, 'tag_sitelist.html', {
         'sites': sites,
         'tag': tag,
     })
@@ -33,7 +33,7 @@ def tag_list(request):
                 tags |= site.tags.all()
         ### remove duplicates
         tags = tags.distinct()
-    return render(request, 'tag/tag_taglist.html', {
+    return render(request, 'tag_taglist.html', {
         'tags': tags
     })
 
