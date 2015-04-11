@@ -15,12 +15,12 @@ def enable_site_alert(request, siteid):
     # check if alerting is already enabled for this site
     try:
         alert = SiteAlert.objects.get(user=request.user, site=site)
-        messages.error(request, 'Alerting is already enabled for the site %s' % site.hostname)
+        messages.error(request, 'Alerting is already enabled for the site "%s"' % site.hostname)
     except SiteAlert.DoesNotExist:
         if form.is_valid():
             alert = SiteAlert(user=request.user, site=site)
             alert.save()
-            messages.success(request, 'Alerting has now been enabled for the site %s' % site.hostname)
+            messages.success(request, 'Alerting has now been enabled for the site "%s"' % site.hostname)
             return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
     return render(request, 'enable_site_alert.html', {
@@ -35,12 +35,13 @@ def disable_site_alert(request, alertid):
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the site %s' % alert.site.hostname)
+        messages.success(request, 'Alerting has been disabled for the site "%s" for user "%s"' % (alert.site.hostname, alert.user))
         return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': alert.site.id}))
 
     return render(request, 'disable_site_alert.html', {
         'form': form,
-        'site': alert.site
+        'site': alert.site,
+        'user': alert.user
     })
 
 
@@ -51,12 +52,12 @@ def enable_tag_alert(request, tagslug):
     # check if alerting is already enabled for this tag
     try:
         alert = TagAlert.objects.get(user=request.user, tag=tag)
-        messages.error(request, 'Alerting is already enabled for the tag %s' % tag)
+        messages.error(request, 'Alerting is already enabled for the tag "%s"' % tag)
     except TagAlert.DoesNotExist:
         if form.is_valid():
             alert = TagAlert(user=request.user, tag=tag)
             alert.save()
-            messages.success(request, 'Alerting has now been enabled for the tag %s' % tag)
+            messages.success(request, 'Alerting has now been enabled for the tag "%s"' % tag)
             return HttpResponseRedirect(reverse('tag_list'))
 
     return render(request, 'enable_tag_alert.html', {
@@ -71,12 +72,13 @@ def disable_tag_alert(request, alertid):
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the tag %s' % alert.tag)
+        messages.success(request, 'Alerting has been disabled for the tag "%s" for the user "%s"' % (alert.tag, alert.user))
         return HttpResponseRedirect(reverse('tag_list'))
 
     return render(request, 'disable_tag_alert.html', {
         'form': form,
-        'tag': alert.tag
+        'tag': alert.tag,
+        'user': alert.user
     })
 
 
@@ -87,12 +89,12 @@ def enable_group_alert(request, groupid):
     # check if alerting is already enabled for this group
     try:
         alert = GroupAlert.objects.get(user=request.user, group=group)
-        messages.error(request, 'Alerting is already enabled for the group %s' % group.name)
+        messages.error(request, 'Alerting is already enabled for the group "%s"' % group.name)
     except GroupAlert.DoesNotExist:
         if form.is_valid():
             alert = GroupAlert(user=request.user, group=group)
             alert.save()
-            messages.success(request, 'Alerting has now been enabled for the group %s' % group.name)
+            messages.success(request, 'Alerting has now been enabled for the group "%s"' % group.name)
             return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': group.id}))
 
     return render(request, 'enable_group_alert.html', {
@@ -107,12 +109,13 @@ def disable_group_alert(request, alertid):
 
     if form.is_valid():
         alert.delete()
-        messages.success(request, 'Alerting has been disabled for the group %s' % alert.group.name)
+        messages.success(request, 'Alerting has been disabled for the group "%s" for the user "%s"' % (alert.group.name, alert.user))
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, 'disable_group_alert.html', {
         'form': form,
-        'group': alert.group
+        'group': alert.group,
+        'user': alert.user
     })
 
 

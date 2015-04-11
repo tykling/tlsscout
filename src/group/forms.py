@@ -39,3 +39,9 @@ class DeleteGroupForm(forms.ModelForm):
         model = Group
         fields = []
 
+
+### schedule urgent group check form
+class ScheduleGroupCheckForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = []

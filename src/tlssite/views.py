@@ -34,19 +34,21 @@ def site_add_edit(request,siteid=None):
         form = SiteForm(request.POST or None, instance=site)
         template = 'site_edit.html'
     else:
+        site = None
         form = SiteForm(request.POST or None)
         template = 'site_add.html'
 
     if form.is_valid():
         site = form.save()
         if siteid:
-            messages.success(request, 'The site %s has been updated.' % site.name)
+            messages.success(request, 'The site "%s" has been updated.' % site.hostname)
         else:
-            messages.success(request, 'The site %s has been created.' % site.name)
+            messages.success(request, 'The site "%s" has been created.' % site.hostname)
         return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
     return render(request, template, {
         'form': form,
+        'site': site
     })
 
 
@@ -59,7 +61,7 @@ def site_delete(request, siteid):
 
     if form.is_valid():
         site.delete()
-        messages.success(request, 'The site %s has been deleted.' % site.name)
+        messages.success(request, 'The site "%s" has been deleted.' % site.hostname)
         return HttpResponseRedirect(reverse('site_list'))
 
     return render(request, 'site_delete_confirm.html', {
@@ -83,14 +85,15 @@ def site_details(request, siteid):
 def site_check(request, siteid):
     site = get_object_or_404(Site, id=siteid)
     if not start_urgent_check_ok(site):
-        messages.error(request, 'A check of this site is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.')
+        messages.error(request, 'A check of the site "%s" is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
     else:
         check = SiteCheck(site=site, urgent=True)
         check.save()
-        messages.success(request, 'Scheduled an urgent check for the site %s' % site.hostname)
+        messages.success(request, 'Scheduled an urgent check for the site "%s"' % site.hostname)
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
 
+@user_passes_test(logged_in_or_anon_allowed, login_url=reverse_lazy('account_login'))
 def site_nagios(request, siteid):
     site = get_object_or_404(Site, id=siteid)
     latestcheck = site.checks.filter(finish_time__isnull=False).latest('finish_time')
@@ -101,7 +104,7 @@ def site_nagios(request, siteid):
     return HttpResponse("N/A", content_type='text/plain')
 
 
-def start_urgent_check_ok(site):    
+def start_urgent_check_ok(site):
     ### check if a check is already running for this site
     try:
         check = SiteCheck.objects.get(site=site, start_time__isnull=False, finish_time__isnull=True)
@@ -115,4 +118,7 @@ def start_urgent_check_ok(site):
         return False
     except SiteCheck.DoesNotExist:
         pass
+
+    ### ok, go ahead and schedule a new urgent check for this site
+    return True
 

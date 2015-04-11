@@ -6,7 +6,7 @@
 <div class="panel panel-default">
   <div class="panel-heading"><h4>Disable Tag Alerting</h4></div>
   <div class="panel-body">
-    <p>Really disable alerting for the tag <b>{{ tag }}</b> ?</p>
+    <p>Really disable alerting for the tag <b>{{ tag }}</b> for user <b>{{ user }}</b>?</p>
     <form action="" method="post">
     {% csrf_token %}
     {% url 'tag_list' tagslug=tag.slug as cancelurl %}

@@ -10,6 +10,7 @@
                 <tr>
                     <th>Hostname</th>
                     <th>When</th>
+                    <th>Urgent?</th>
                     <th>Status Message</th>
                     <th>IP</th>
                     <th>Grade</th>
@@ -20,6 +21,7 @@
                     <tr>
                         <td>{{ check.site.hostname }}</td>
                         <td>{{ check.finish_time }}</td>
+                        <td>{{ check.urgent }}</td>
                         <td>{{ check.status }}</td>
                         {% if check.results.all.count == 0 %}
                             <td>N/A</td>
@@ -32,6 +34,7 @@
                     {% if check.results.all.count > 1 %}
                         {% for result in check.results.all|slice:"1:" %}
                         <tr>
+                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>

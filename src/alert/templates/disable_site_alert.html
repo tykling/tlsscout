@@ -6,7 +6,7 @@
 <div class="panel panel-default">
   <div class="panel-heading"><h4>Disable Site Alerting</h4></div>
   <div class="panel-body">
-    <p>Really disable alerting for the site {{ site }} ?</p>
+    <p>Really disable alerting for the site {{ site }} for user <b>{{ user }}</b>?</p>
     <form action="" method="post">
     {% csrf_token %}
     {% url 'site_details' siteid=site.id as cancelurl %}

@@ -44,12 +44,17 @@ def tag_list(request):
 def tag_check(request, tagslug):
     tag = get_object_or_404(Tag, slug=tagslug)
     sites = Site.objects.filter(tags__slug=tagslug)
+    checkcounter=0
     for site in sites:
         if not start_urgent_check_ok(site):
             messages.error(request, 'A check of the site %s is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
         else:
             check = SiteCheck(site=site, urgent=True)
             check.save()
-    messages.success(request, 'Scheduled an urgent check for all %s sites tagged with %s' % (sites.count(), tagslug))
+            checkcounter += 1
+    if checkcounter > 0:
+        messages.success(request, 'Scheduled an urgent check for %s sites tagged with %s' % (checkcounter, tagslug))
+    else:
+        messages.error(request, 'No new urgent checks scheduled')
     return HttpResponseRedirect(reverse('tag_details', kwargs={'tagslug': tagslug}))
 

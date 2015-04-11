@@ -2,7 +2,7 @@ from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpRespo
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from group.models import Group
-from group.forms import GroupForm, DeleteGroupForm
+from group.forms import GroupForm, DeleteGroupForm, ScheduleGroupCheckForm
 from tlssite.models import Site
 from django.core.urlresolvers import reverse, reverse_lazy
 from sitecheck.models import SiteCheck, SiteCheckResult
@@ -24,11 +24,11 @@ def group_add_edit(request,groupid=None):
         template = 'group_add.html'
 
     if form.is_valid():
+        group = form.save()
         if groupid:
-            messages.success(request, 'The group %s has been updated.' % group.name)
+            messages.success(request, 'The group "%s" has been updated.' % group.name)
         else:
-            messages.success(request, 'The group %s has been created.' % group.name)
-        form.save()
+            messages.success(request, 'The group "%s" has been created.' % group.name)
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, template, {
@@ -47,16 +47,11 @@ def group_delete(request, groupid):
             'group': group
         })
     
-    if request.method == 'POST':
-        form = DeleteGroupForm(request.POST, instance=group)
-        if form.is_valid():
-            group.delete()
-            messages.success(request, 'The group %s has been deleted.' % group.name)
-            return HttpResponseRedirect(reverse('group_list'))
-        else:
-            return HttpResponseRedirect(reverse('group_list'))
-    else:
-        form = DeleteGroupForm(instance=group)
+    form = DeleteGroupForm(request.POST or None, instance=group)
+    if form.is_valid():
+        group.delete()
+        messages.success(request, 'The group "%s" has been deleted.' % group.name)
+        return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, 'group_delete_confirm.html', {
         'group': group,
@@ -89,13 +84,24 @@ def group_details(request,groupid):
 @login_required
 def group_check(request, groupid):
     group = get_object_or_404(Group, id=groupid)
-    sites = Site.objects.filter(group=group)
-    for site in sites:
-        if not start_urgent_check_ok(site):
-            messages.error(request, 'A check of the site %s is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
+    form = ScheduleGroupCheckForm(request.POST or None, instance=group)
+    if form.is_valid():
+        sites = Site.objects.filter(group=group)
+        checkcounter = 0
+        for site in sites:
+            if not start_urgent_check_ok(site):
+                messages.error(request, 'A check of the site "%s" is already running, or an urgent check is already scheduled. Not scheduling a new urgent check.' % site.hostname)
+            else:
+                check = SiteCheck(site=site, urgent=True)
+                check.save()
+                checkcounter += 1
+        if checkcounter > 0:
+            messages.success(request, 'Scheduled an urgent check for %s sites in the group "%s"' % (checkcounter, group.name))
         else:
-            check = SiteCheck(site=site, urgent=True)
-            check.save()
-    messages.success(request, 'Scheduled an urgent check for all %s sites in the group %s' % (sites.count(), group.name))
-    return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': groupid}))
+            messages.error(request, 'No new urgent checks scheduled!')
+        return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': groupid}))
 
+    return render(request, 'group_check_confirm.html', {
+        'group': group,
+        'form': form
+    })

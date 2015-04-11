@@ -6,7 +6,7 @@
 <div class="panel panel-default">
   <div class="panel-heading"><h4>Disable Group Alerting</h4></div>
   <div class="panel-body">
-    <p>Really disable alerting for the group <b>{{ group }}</b> ?</p>
+    <p>Really disable alerting for the group <b>{{ group }}</b> for user <b>{{ user }}</b>?</p>
     <form action="" method="post">
     {% csrf_token %}
     {% url 'group_details' groupid=group.id as cancelurl %}

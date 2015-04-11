@@ -20,13 +20,14 @@
                         <td><a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a></td>
                         <td>{% for site in tag.taggit_taggeditem_items.all %}<a href="{% url 'site_details' siteid=site.content_object.id %}">{{ site.content_object.hostname }}</a> {% endfor %}</td>
                         <td>
+                            <a href="{% url 'tag_details' tagslug=tag.slug %}" class="btn btn-info btn-xs"><i class="fa fa-search"></i> Details</a>
                             {% if user.is_authenticated %}
                                 {% if tag|get_tag_alerting:request.user %}
                                     <a href="{% url 'disable_tag_alert' alertid=tag|get_tag_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
                                 {% else %}
                                     <a href="{% url 'enable_tag_alert' tagslug=tag.slug %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                                 {% endif %}
-                            <a href="{% url 'tag_check' tagslug=tag.slug %}" class="btn btn-warning btn-xs"><i class="fa fa-bell"></i> Check!</a>
+                            <a href="{% url 'tag_check' tagslug=tag.slug %}" class="btn btn-warning btn-xs"><i class="fa fa-bell"></i> Check!</a> 
                             {% endif %}
                          </td>
                     </tr>
