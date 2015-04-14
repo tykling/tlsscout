@@ -46,7 +46,11 @@
                     {% if site.checks.all.0.results.all.count == 0 %}
                         <td>{{ site.checks.all.0.status }}</td>
                     {% else %}
-                        <td>{{ site.checks.all.0.results.all|format_result|safe }}</td>
+                        {% if not site.checks.all.0.start_time and site.checks.count > 1 %}
+                            <td>{{ site.checks.all.1.results.all|format_result|safe }}</td>
+                        {% else %}
+                            <td>{{ site.checks.all.0.results.all|format_result|safe }}</td>
+                        {% endif %}
                     {% endif %}
                     
                     {% if site.checks.all.0.finish_time %}
