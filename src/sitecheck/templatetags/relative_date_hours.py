@@ -6,3 +6,4 @@ register = template.Library()
 def relative_date_hours(value, arg):
     """add or substract a given number of hours from a datetime"""
     return value + timedelta(hours=arg)
+

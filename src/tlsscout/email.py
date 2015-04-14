@@ -8,12 +8,9 @@ def send_email(subject, from_email, recipient, text_content, html_content):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [recipient])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-    #print "hej"
     
 def tlsscout_alert(oldcheck, newcheck):
-    print "start of tlsscout_alert function.."
-    
-    ### get hostname for this tlsscout instance for use in the email
+    ### get hostname for this tlsscout instance (for use in the email)
     current_site = Site.objects.get_current()
     
     ### start putting the email together
@@ -30,10 +27,9 @@ def tlsscout_alert(oldcheck, newcheck):
         html_content = render_to_string('emails/result_changed.html', formatdict)
         
         ### find out who should receive this alert
-        print "looping over recipients.."
         for recipient in oldcheck.site.get_alert_users().all():
             send_email(subject, from_email, recipient.email, text_content, html_content)
     except Exception as E:
-        print "exception while lolrendering and sending email: %s" % E
+        print "exception while rendering and sending email: %s" % E
         return False
 
