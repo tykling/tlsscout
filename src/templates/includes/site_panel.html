@@ -31,9 +31,10 @@
                 <td><a href="{% url 'group_details' groupid=site.group.id %}">{{ site.group }}</a></td>
                 <td>{% for tag in site.tags.all %}<a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a><br>{% endfor %}</td>
                 {% if site.checks.count > 0 %}
-                    <td>{{ site.checks.all.0.finish_time|naturaltime }}</td>
+                    <td><span style='display: none'>{{ site.checks.all.0.finish_time|date:"U" }}</span>{{ site.checks.all.0.finish_time|naturaltime }}</td>
+                    
                     {% if site.last_change %}
-                        <td>{{ site.last_change|naturaltime }}</td>
+                        <td><span style='display: none'>{{ site.last_change|date:"U" }}</span>{{ site.last_change|naturaltime }}</td>
                     {% else %}
                         <td>n/a</td>
                     {% endif %}
@@ -43,9 +44,9 @@
                     {% else %}
                         <td>{{ site.checks.all.0.results.all|format_result|safe }}</td>
                     {% endif %}
-
+                    
                     {% if site.checks.all.0.finish_time %}
-                        <td>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|naturaltime }}</td>
+                        <td><span style='display: none'>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|date:"U" }}</span>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|naturaltime }}</td>
                     {% else %}
                         {% if site.checks.all.0.start_time %}
                             <td>Running</td>
