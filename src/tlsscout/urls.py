@@ -23,16 +23,16 @@ urlpatterns = patterns('',
     url(r'^groups/(?P<groupid>\w+)/check/$', 'group.views.group_check', name='group_check'),
 
     # tags
-    url(r'^tags/(?P<tagslug>\w+)/$', 'tag.views.tag_details', name='tag_details'),
+    url(r'^tags/(?P<tagslug>[-\w\d]+)/$', 'tag.views.tag_details', name='tag_details'),
     url(r'^tags/$', 'tag.views.tag_list', name='tag_list'),
-    url(r'^tags/(?P<tagslug>\w+)/check/$', 'tag.views.tag_check', name='tag_check'),
+    url(r'^tags/(?P<tagslug>[-\w\d]+)/check/$', 'tag.views.tag_check', name='tag_check'),
 
     # alerts
     url(r'^alerts/$', 'alert.views.alert_list', name='alert_list'),
     url(r'^alerts/mine/$', 'alert.views.alert_list_user', name='alert_list_user'),
     
     url(r'^sites/(?P<siteid>\w+)/alert/$', 'alert.views.enable_site_alert', name='enable_site_alert'),
-    url(r'^tags/(?P<tagslug>\w+)/alert/$', 'alert.views.enable_tag_alert', name='enable_tag_alert'),
+    url(r'^tags/(?P<tagslug>[-\w\d]+)/alert/$', 'alert.views.enable_tag_alert', name='enable_tag_alert'),
     url(r'^groups/(?P<groupid>\w+)/alert/$', 'alert.views.enable_group_alert', name='enable_group_alert'),
     
     url(r'^sitealerts/(?P<alertid>\w+)/disable/$', 'alert.views.disable_site_alert', name='disable_site_alert'),
