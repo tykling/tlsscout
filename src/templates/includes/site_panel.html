@@ -31,7 +31,11 @@
                 <td><a href="{% url 'group_details' groupid=site.group.id %}">{{ site.group }}</a></td>
                 <td>{% for tag in site.tags.all %}<a href="{% url 'tag_details' tagslug=tag.slug %}"><span class="label label-info">{{ tag.name }}</span></a><br>{% endfor %}</td>
                 {% if site.checks.count > 0 %}
-                    <td><span style='display: none'>{{ site.checks.all.0.finish_time|date:"U" }}</span>{{ site.checks.all.0.finish_time|naturaltime }}</td>
+                    {% if not site.checks.all.0.start_time and site.checks.count > 1 %}
+                        <td><span style='display: none'>{{ site.checks.all.1.finish_time|date:"U" }}</span>{{ site.checks.all.1.finish_time|naturaltime }}</td>
+                    {% else %}
+                        <td><span style='display: none'>{{ site.checks.all.0.finish_time|date:"U" }}</span>{{ site.checks.all.0.finish_time|naturaltime }}</td>
+                    {% endif %}
                     
                     {% if site.last_change %}
                         <td><span style='display: none'>{{ site.last_change|date:"U" }}</span>{{ site.last_change|naturaltime }}</td>
