@@ -7,7 +7,9 @@ from group.models import Group
 from alert.models import SiteAlert, TagAlert, GroupAlert
 from alert.forms import EnableSiteAlertForm, DisableSiteAlertForm, EnableGroupAlertForm, DisableGroupAlertForm, EnableTagAlertForm, DisableTagAlertForm
 from taggit.models import Tag
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+@login_required
 def enable_site_alert(request, siteid):
     site = get_object_or_404(Site, id=siteid)
     form = EnableSiteAlertForm(request.POST or None)
@@ -29,6 +31,7 @@ def enable_site_alert(request, siteid):
     })
 
 
+@login_required
 def disable_site_alert(request, alertid):
     alert = get_object_or_404(SiteAlert, id=alertid)
     form = DisableSiteAlertForm(request.POST or None, instance=alert)
@@ -45,6 +48,7 @@ def disable_site_alert(request, alertid):
     })
 
 
+@login_required
 def enable_tag_alert(request, tagslug):
     tag = get_object_or_404(Tag, slug=tagslug)
     form = EnableTagAlertForm(request.POST or None)
@@ -66,6 +70,7 @@ def enable_tag_alert(request, tagslug):
     })
 
 
+@login_required
 def disable_tag_alert(request, alertid):
     alert = get_object_or_404(TagAlert, id=alertid)
     form = DisableTagAlertForm(request.POST or None, instance=alert)
@@ -82,6 +87,7 @@ def disable_tag_alert(request, alertid):
     })
 
 
+@login_required
 def enable_group_alert(request, groupid):
     group = get_object_or_404(Group, id=groupid)
     form = EnableGroupAlertForm(request.POST or None)
@@ -103,6 +109,7 @@ def enable_group_alert(request, groupid):
     })
 
 
+@login_required
 def disable_group_alert(request, alertid):
     alert = get_object_or_404(GroupAlert, id=alertid)
     form = DisableGroupAlertForm(request.POST or None, instance=alert)
@@ -119,10 +126,12 @@ def disable_group_alert(request, alertid):
     })
 
 
+@login_required
 def alert_list_user(request):
     return alert_list(request, request.user)
 
 
+@login_required
 def alert_list(request, user=None):
     if user:
         sitealerts = SiteAlert.objects.filter(user=user)
