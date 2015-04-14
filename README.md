@@ -9,7 +9,7 @@ to serve the application. I prefer uwsgi behind an nginx server. YMMV.
 
 Create a database, anything supported by Django is fine.
 
-Copy settings.py.dist to settings.py and change:
+Copy tlsscout_settings.py.dist to tlsscout_settings.py and change:
 - SECRET_KEY (make it a 100+ chars random string)
 - ALLOWED_HOSTS (the domainname of your tlsscout instance)
 - DATABASES section (database info and credentials)
@@ -22,3 +22,6 @@ your tlsscout instance.
 By default ALLOW_ANONYMOUS_VIEWING is True which means that the information
 collected by the tlsscout instance is public without logging in. Set to false
 to require login to see stuff.
+
+By default ENABLE_SIGNUP is true which means new accounts can be created. Change
+to False to prevent new signups.

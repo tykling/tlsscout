@@ -11,34 +11,6 @@ from django.conf import global_settings
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-##############################################################################
-################## tlsscout settings, edit these #############################
-SECRET_KEY = 'make this a long random string, ~100 chars'
-ALLOWED_HOSTS = [ 'example.com' ] # set to your tlsscout hostname
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# email settings
-EMAIL_HOST='mailhost.example.com'
-EMAIL_PORT=587
-EMAIL_HOST_USER='mymailuser'
-EMAIL_HOST_PASSWORD='mymailpassword'
-EMAIL_USE_TLS=True
-EMAIL_FROM='noreply@example.com'     # NOTE: this email is included in the useragent when using the SSL Labs API
-
-# enable new accout creation / signups / registration?
-ENABLE_SIGNUP=True
-
-##############################################################################
-################### regular Django settings below here #######################
-
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -56,8 +28,6 @@ INSTALLED_APPS = (
 
     # pretty forms
     'bootstrapform',
-
-    #'debug_toolbar',
 
     # tags
     'taggit',
@@ -122,9 +92,6 @@ TEMPLATES = [
 # sites framework
 SITE_ID = 1
 
-DEFAULT_FROM_EMAIL=EMAIL_FROM
-SERVER_EMAIL=EMAIL_FROM
-
 # ssllabs API settings
 SSLLABS_APIURL="https://api.ssllabs.com/api/v2/"
 SSLLABS_TERMSURL="https://www.ssllabs.com/about/terms.html"
@@ -143,8 +110,6 @@ ACCOUNT_EMAIL_VERIFICATION="mandatory"
 ACCOUNT_AUTHENTICATION_METHOD="username_email"
 ACCOUNT_EMAIL_REQUIRED=True
 LOGIN_REDIRECT_URL = "/"
-if not ENABLE_SIGNUP:
-    ACCOUNT_ADAPTER = 'tlsscout.adapters.SignupDisabledAdapter'
 
 LOGGING = {
     'version': 1,
@@ -172,4 +137,12 @@ LOGGING = {
         },
     }
 }
+
+from tlsscout_settings import *
+
+# these depend on stuff defined in tlsscout_settings.py
+DEFAULT_FROM_EMAIL=EMAIL_FROM
+SERVER_EMAIL=EMAIL_FROM
+if not ENABLE_SIGNUP:
+    ACCOUNT_ADAPTER = 'tlsscout.adapters.SignupDisabledAdapter'
 
