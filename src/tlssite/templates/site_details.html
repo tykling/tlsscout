@@ -13,9 +13,9 @@
         Checks of this site <b>{% if site.group.publish %}will{% else %}will not{% endif %}</b> be 
         published on the SSL Labs website.</p>
         {% if site|get_site_alerting:request.user %}
-            <p>Alerting is <b>enabled</b> for you for this site. <a href="{% url 'disable_site_alert' alertid=site|get_site_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a>.</p>
+            <p>Alerting is <b>enabled</b> for you for this site. {% if user.is_authenticated %}<a href="{% url 'disable_site_alert' alertid=site|get_site_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a>{% endif %}</p>
         {% else %}
-            <p>Alerting is <b>not enabled</b> for you for this site. <a href="{% url 'enable_site_alert' siteid=site.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable alerting</a></p>
+            <p>Alerting is <b>not enabled</b> for you for this site. {% if user.is_authenticated %}<a href="{% url 'enable_site_alert' siteid=site.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable alerting</a>{% endif %}</p>
         {% endif %}
         {% if site.tags.all %}
             <p>This site is tagged with the following tags:
@@ -23,10 +23,12 @@
         {% else %}
             <p>This site has no tags</p>
         {% endif %}
+        {% if user.is_authenticated %}
         <p>
             <a href="{% url 'site_edit' siteid=site.id %}" class="btn btn-info"><i class="fa fa-edit"></i>Edit site</a> 
             <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete site</a> 
         </p>
+        {% endif %}
     </div>
 </div>
 {% include 'includes/check_panel.html' with checks=site.checks %}
