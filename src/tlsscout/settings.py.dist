@@ -33,6 +33,9 @@ EMAIL_HOST_PASSWORD='mymailpassword'
 EMAIL_USE_TLS=True
 EMAIL_FROM='noreply@example.com'     # NOTE: this email is included in the useragent when using the SSL Labs API
 
+# enable new accout creation / signups / registration?
+ENABLE_SIGNUP=True
+
 ##############################################################################
 ################### regular Django settings below here #######################
 
@@ -140,6 +143,8 @@ ACCOUNT_EMAIL_VERIFICATION="mandatory"
 ACCOUNT_AUTHENTICATION_METHOD="username_email"
 ACCOUNT_EMAIL_REQUIRED=True
 LOGIN_REDIRECT_URL = "/"
+if not ENABLE_SIGNUP:
+    ACCOUNT_ADAPTER = 'tlsscout.adapters.SignupDisabledAdapter'
 
 LOGGING = {
     'version': 1,
@@ -167,3 +172,4 @@ LOGGING = {
         },
     }
 }
+

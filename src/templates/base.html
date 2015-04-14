@@ -40,7 +40,9 @@
                 </li>
             {% else %}
                 <li><a href="{% url 'account_login' %}"><i class="fa fa-sign-in"></i> Sign In</a></li>
-                <li><a href="{% url 'account_signup' %}"><i class="fa fa-star"></i> Sign Up</a></li>
+                {% if SIGNUP_ENABLED %}
+                    <li><a href="{% url 'account_signup' %}"><i class="fa fa-star"></i> Sign Up</a></li>
+                {% endif %}
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
