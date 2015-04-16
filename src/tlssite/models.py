@@ -43,7 +43,7 @@ class Site(models.Model):
         from alert.models import SiteAlert, TagAlert, GroupAlert
         sitealertusers = User.objects.filter(id__in=SiteAlert.objects.filter(site=self).values('user'))
         groupalertusers = User.objects.filter(id__in=GroupAlert.objects.filter(group=self.group).values('user'))
-        tagalertusers = User.objects.filter(id__in=TagAlert.objects.filter(tag__name__in=self.tags.all()).values('user'))
+        tagalertusers = User.objects.filter(id__in=TagAlert.objects.filter(tag__in=[tag.id for tag in site.tags.all()]).values('user'))
         alertusers = sitealertusers | groupalertusers | tagalertusers
         return alertusers.distinct()
 
