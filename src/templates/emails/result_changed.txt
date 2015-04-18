@@ -1,5 +1,4 @@
-{% load url from future %}
-TLSScout result changed!
+{% load url from future %}TLSScout result changed!
 -------------------------
 While checking the site {{ site.hostname }} using the 
 SSL Labs API we encountered a different result than the 
