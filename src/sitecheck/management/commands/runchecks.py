@@ -205,6 +205,9 @@ class Command(BaseCommand):
             if oldresults.count() != newresults.count():
                 ### something changed, send alert
                 tlsscout_alert(oldcheck, newcheck)
+                ### update last_change time
+                site.last_change = datetime.datetime.now().replace(tzinfo=pytz.utc)
+                site.save()
                 return
             
             ### same number of results, compare the grade
