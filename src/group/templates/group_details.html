@@ -17,7 +17,7 @@
             <p>
                 <a href="{% url 'group_edit' groupid=group.id %}" class="btn btn-info"><i class="fa fa-edit"></i> Edit group</a> 
                 {% if group.sites.count == 0 %}
-                    <a href="{% url 'group_delete' groupid=group.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete group</a>
+                    <a href="{% url 'group_delete' groupid=group.id %}" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete group</a>
                 {% endif %}
             </p>
         {% endif %}

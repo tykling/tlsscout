@@ -8,6 +8,7 @@ from tlssite.models import Site
 from tlsscout.email import tlsscout_alert
 import os, socket, sys, datetime, atexit, json
 import tempfile
+from eventlog.utils import AddLogEntry
 
 class Command(BaseCommand):
     args = 'none'
@@ -22,28 +23,23 @@ class Command(BaseCommand):
             self.stdout.write("%s already exists, exiting" % pidfile)
             sys.exit()
         else:
-            #self.stdout.write("writing pidfile")
             file(pidfile, 'w').write(pid)
             atexit.register(self.__RmPidFile, pidfile)
     
         ### update the status of running checks first, to see if anything finished
-        #self.stdout.write("- update status of running checks...")
         self.__UpdateRunningChecks()
 
 
         ### see if any new urgent checks need to be started
-        #self.stdout.write("- starting urgent checks...")
         self.__StartUrgentChecks()
 
 
         ### see if any regular new checks need to be started
-        #self.stdout.write("- starting regular checks...")
         self.__StartRegularChecks()
 
 
     ### clean up method
     def __RmPidFile(self, pidfile):
-        #self.stdout.write("deleting pidfile")
         os.unlink(pidfile)
 
 
@@ -51,7 +47,7 @@ class Command(BaseCommand):
     def __StartUrgentChecks(self):
         urgentchecks = SiteCheck.objects.filter(urgent=True, start_time__isnull=True, finish_time__isnull=True)
         for check in urgentchecks:
-            self.stdout.write("starting urgent check of site %s" % check.site.hostname)
+            AddLogEntry(username='tlsscout engine', type='engine', event='starting urgent check of site %s' % check.site.hostname)
             StartScan(check)
 
 
@@ -62,7 +58,7 @@ class Command(BaseCommand):
             ### if this site has no checks at all start one now
             if SiteCheck.objects.filter(site=site).count() == 0:
                 ### start a new check
-                self.stdout.write("starting new check of site %s" % site.hostname)
+                AddLogEntry(username='tlsscout engine', type='engine', event='starting regular check of site %s' % check.site.hostname)
                 check = SiteCheck(site=site)
                 check.save()
                 StartScan(check)
@@ -71,14 +67,12 @@ class Command(BaseCommand):
             ### this site has one or more checks in database, see is any are started but not finished
             checks = SiteCheck.objects.filter(site=site, start_time__isnull=False, finish_time__isnull=True)
             if checks:
-                self.stdout.write("found a running check for site %s, not starting a new one" % site.hostname)
                 continue
             
             ### this site has no currently running checks, see if one was added but never started
             ### (only one such check should ever exist)
             try:
                 check = SiteCheck.objects.get(site=site, start_time__isnull=True, finish_time__isnull=True)
-                self.stdout.write("found unstarted check for site %s, starting it..." % site.hostname)
                 StartScan(check)
                 continue
             except SiteCheck.DoesNotExist:
@@ -91,7 +85,6 @@ class Command(BaseCommand):
                 continue
             else:
                 ### it is time to run a new check of this site
-                self.stdout.write("it is time for a new check of site %s, starting " % site.hostname)
                 check = SiteCheck(site=site)
                 check.save()
                 StartScan(check)
@@ -103,7 +96,7 @@ class Command(BaseCommand):
 
         ### loop through them and check each to see if it is finished yet
         for check in runningchecks:
-            self.stdout.write("checking status of running check for site %s" % check.site.hostname)
+            AddLogEntry(username='tlsscout engine', type='engine', event='checking status of running check for site %s' % check.site.hostname)
             ### make an API call to see if the check has finished
             hostinfo = GetResults(check)
             if not hostinfo:
@@ -132,7 +125,7 @@ class Command(BaseCommand):
                 check.json_result = json.dumps(hostinfo)
                 check.save()
                 self.__ParseResultJson(sitecheck=check, hostinfo=hostinfo)
-                self.stdout.write("check of site %s is still running.." % check.site.hostname)
+                AddLogEntry(username='tlsscout engine', type='engine', event='Check of site %s is still running' % check.site.hostname)
             elif hostinfo['status'] == "READY":
                 ### check is finished, yay
                 check.status = "READY"
@@ -141,7 +134,7 @@ class Command(BaseCommand):
                 check.finish_time=timezone.now()
                 check.save()
                 self.__ParseResultJson(sitecheck=check, hostinfo=hostinfo)
-                self.stdout.write("check of site %s is finished!" % check.site.hostname)
+                AddLogEntry(username='tlsscout engine', type='engine', event='Check of site %s is finished' % check.site.hostname)
                 ### check for changes compared to previous check, send alerts if enabled
                 self.__CheckForChanges(site=check.site)
             else:
@@ -152,7 +145,6 @@ class Command(BaseCommand):
 
             ### save the check and continue
             check.save()
-            self.stdout.write("finished updating check of site %s" % check.site.hostname)
             continue
 
 

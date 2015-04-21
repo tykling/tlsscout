@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'ssllabs',
     'alert',
     'tag',
+    'eventlog',
 )
 
 MIDDLEWARE_CLASSES = (

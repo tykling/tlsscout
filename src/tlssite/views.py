@@ -4,13 +4,13 @@ from tlssite.models import Site
 from django.contrib.auth.decorators import login_required, user_passes_test
 from group.models import Group
 from tlssite.forms import SiteForm, DeleteSiteForm
-import re
 from django.core.urlresolvers import reverse, reverse_lazy
 from sitecheck.models import SiteCheck, SiteCheckResult
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.conf import settings
 from ssllabs.wrappers import StartScan
 from django.contrib import messages
+from eventlog.utils import AddLogEntry
 
 
 ### list sites
@@ -42,8 +42,10 @@ def site_add_edit(request,siteid=None):
         site = form.save()
         if siteid:
             messages.success(request, 'The site "%s" has been updated.' % site.hostname)
+            AddLogEntry(username=request.user, type='configchange', event='Edited site "%s"' % site.hostname)
         else:
             messages.success(request, 'The site "%s" has been created.' % site.hostname)
+            AddLogEntry(username=request.user, type='configchange', event='Created new site "%s"' % site.hostname)
         return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
     return render(request, template, {
@@ -62,6 +64,7 @@ def site_delete(request, siteid):
     if form.is_valid():
         site.delete()
         messages.success(request, 'The site "%s" has been deleted.' % site.hostname)
+        AddLogEntry(username=request.user, type='configchange', event='Deleted the site "%s"' % site.hostname)
         return HttpResponseRedirect(reverse('site_list'))
 
     return render(request, 'site_delete_confirm.html', {
@@ -91,6 +94,7 @@ def site_check(request, siteid):
         check = SiteCheck(site=site, urgent=True)
         check.save()
         messages.success(request, 'Scheduled an urgent check for the site "%s"' % site.hostname)
+        AddLogEntry(request.user, type='configchange', event='Scheduled an urgent check of the site "%s"' % site.hostname)
     return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': siteid}))
 
 

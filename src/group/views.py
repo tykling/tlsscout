@@ -10,6 +10,7 @@ from django.conf import settings
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.contrib import messages
 from tlssite.views import start_urgent_check_ok
+from eventlog.utils import AddLogEntry
 
 
 ### add/edit group function
@@ -28,8 +29,10 @@ def group_add_edit(request,groupid=None):
         group = form.save()
         if groupid:
             messages.success(request, 'The group "%s" has been updated.' % group.name)
+            AddLogEntry(username=request.user, type='configchange', event='Edited group "%s"' % group.name)
         else:
             messages.success(request, 'The group "%s" has been created.' % group.name)
+            AddLogEntry(username=request.user, type='configchange', event='Created new group "%s"' % group.name)
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, template, {
@@ -53,6 +56,7 @@ def group_delete(request, groupid):
     if form.is_valid():
         group.delete()
         messages.success(request, 'The group "%s" has been deleted.' % group.name)
+        AddLogEntry(username=request.user, type='configchange', event='Deleted the group "%s"' % group.name)
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, 'group_delete_confirm.html', {
@@ -104,6 +108,7 @@ def group_check(request, groupid):
                 checkcounter += 1
         if checkcounter > 0:
             messages.success(request, 'Scheduled an urgent check for %s sites in the group "%s"' % (checkcounter, group.name))
+            AddLogEntry(username=request.user, type='configchange', event='Scheduled an urgent check of the sites in the group "%s"' % group.name)
         else:
             messages.error(request, 'No new urgent checks scheduled!')
         return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': groupid}))

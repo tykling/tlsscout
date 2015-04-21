@@ -8,6 +8,7 @@ from alert.models import SiteAlert, TagAlert, GroupAlert
 from alert.forms import EnableSiteAlertForm, DisableSiteAlertForm, EnableGroupAlertForm, DisableGroupAlertForm, EnableTagAlertForm, DisableTagAlertForm
 from taggit.models import Tag
 from django.contrib.auth.decorators import login_required, user_passes_test
+from eventlog.utils import AddLogEntry
 
 @login_required
 def enable_site_alert(request, siteid):
@@ -23,6 +24,7 @@ def enable_site_alert(request, siteid):
             alert = SiteAlert(user=request.user, site=site)
             alert.save()
             messages.success(request, 'Alerting has now been enabled for the site "%s"' % site.hostname)
+            AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user %s for the site %s' % (alert.user, site.hostname))
             return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
 
     return render(request, 'enable_site_alert.html', {
@@ -39,6 +41,7 @@ def disable_site_alert(request, alertid):
     if form.is_valid():
         alert.delete()
         messages.success(request, 'Alerting has been disabled for the site "%s" for user "%s"' % (alert.site.hostname, alert.user))
+        AddLogEntry(username=request.user, type='configchange', event='Disabled alerting for the user "%s" for the site "%s"' % (alert.user, alert.site.hostname))
         return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': alert.site.id}))
 
     return render(request, 'disable_site_alert.html', {
@@ -62,6 +65,7 @@ def enable_tag_alert(request, tagslug):
             alert = TagAlert(user=request.user, tag=tag)
             alert.save()
             messages.success(request, 'Alerting has now been enabled for the tag "%s"' % tag)
+            AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user "%s" for the tag "%s"' % (alert.user, tag))
             return HttpResponseRedirect(reverse('tag_list'))
 
     return render(request, 'enable_tag_alert.html', {
@@ -78,6 +82,7 @@ def disable_tag_alert(request, alertid):
     if form.is_valid():
         alert.delete()
         messages.success(request, 'Alerting has been disabled for the tag "%s" for the user "%s"' % (alert.tag, alert.user))
+        AddLogEntry(username=request.user, type='configchange', event='Disabled alerting for the user "%s" for the tag "%s"' % (alert.user, alert.tag))
         return HttpResponseRedirect(reverse('tag_list'))
 
     return render(request, 'disable_tag_alert.html', {
@@ -101,6 +106,7 @@ def enable_group_alert(request, groupid):
             alert = GroupAlert(user=request.user, group=group)
             alert.save()
             messages.success(request, 'Alerting has now been enabled for the group "%s"' % group.name)
+            AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user "%s" for the group "%s"' % (alert.user, group.name))
             return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': group.id}))
 
     return render(request, 'enable_group_alert.html', {
@@ -117,6 +123,7 @@ def disable_group_alert(request, alertid):
     if form.is_valid():
         alert.delete()
         messages.success(request, 'Alerting has been disabled for the group "%s" for the user "%s"' % (alert.group.name, alert.user))
+        AddLogEntry(username=request.user, type='configchange', event='Disabled alerting for the user "%s" for the group "%s"' % (alert.user, alert.group.name))
         return HttpResponseRedirect(reverse('group_list'))
 
     return render(request, 'disable_group_alert.html', {

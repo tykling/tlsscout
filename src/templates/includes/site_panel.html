@@ -102,11 +102,4 @@
 </div>
 {% endif %}
 
-<script>
-$('.popoverlabel').popover({ trigger: "hover click" });
-$(document).ready(function() 
-    { 
-        $(".tablesorter").tablesorter(); 
-    } 
-);
-</script>
+{% include 'includes/tablesorter.js.html' %}

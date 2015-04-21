@@ -1,0 +1,37 @@
+{% load relative_date_hours %}
+{% load format_result %}
+{% load humanize %}
+{% load get_site_alerting %}
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{ headline|default:"Events" }}</h4></div>
+    <div class="panel-body">
+    {% if not events %}
+        <p>No events.</p>
+    {% else %}
+        {% include 'includes/pagination.html' with objects=events %}
+        <table class="table table-striped table-hover tablesorter" style="font-size:larger; vertical-align:middle;">
+            <thead>
+                <tr>
+                    <th>When</th>
+                    <th>Username</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.datetime }} ({{ event.datetime|naturaltime }})</td>
+                    <td>{{ event.username }}</td>
+                    <td>{{ event.type }}</td>
+                    <td>{{ event.event }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'includes/pagination.html' with objects=events %}
+    {% endif %}
+    </div>
+</div>
+
+{% include 'includes/tablesorter.js.html' %}
