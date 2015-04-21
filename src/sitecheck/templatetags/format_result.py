@@ -1,5 +1,6 @@
 from django import template
 from collections import Iterable
+from django.template.loader import render_to_string
 register = template.Library()
 
 @register.filter
@@ -9,36 +10,75 @@ def format_result(value):
     output = ""
     for result in value:
         if result.grade == "A+":
-            labelclass="label-success"
-            gradenumber = 8
+            formatdict = {
+                'gradenumber': 8,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-success',
+                'grade': result.grade,
+            }
         elif result.grade == "A":
-            labelclass="label-success"
-            gradenumber = 7
+            formatdict = {
+                'gradenumber': 7,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-success',
+                'grade': result.grade,
+            }
         elif result.grade == "A-":
-            labelclass="label-success"
-            gradenumber = 6
+            formatdict = {
+                'gradenumber': 6,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-success',
+                'grade': result.grade,
+            }
         elif result.grade == "B":
-            labelclass="label-warning"
-            gradenumber = 5
+            formatdict = {
+                'gradenumber': 5,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-warning',
+                'grade': result.grade,
+            }
         elif result.grade == "C":
-            labelclass="label-warning"
-            gradenumber = 4
+            formatdict = {
+                'gradenumber': 4,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-warning',
+                'grade': result.grade,
+            }
         elif result.grade == "D":
-            labelclass="label-danger"
-            gradenumber = 3
+            formatdict = {
+                'gradenumber': 3,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-danger',
+                'grade': result.grade,
+            }
         elif result.grade == "E":
-            labelclass="label-danger"
-            gradenumber = 2
+            formatdict = {
+                'gradenumber': 2,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-danger',
+                'grade': result.grade,
+            }
         elif result.grade == "F":
-            labelclass="label-danger"
-            gradenumber = 1
+            formatdict = {
+                'gradenumber': 1,
+                'headline': 'Messages for %s' % result.serverip,
+                'labelclass': 'label-danger',
+                'grade': result.grade,
+            }
         else:
-            labelclass="label-default"
-            gradenumber = 0
-            result.grade = "X"
             if result.status_message and result.status_message != "":
-                output += "<span style='display: none'>%s</span><span style='font-size: 36px'><span data-content='%s' data-placement='right' data-original-title='Error Message' data-trigger='hover click' class='popoverlabel label %s'>%s</span></span>&nbsp;" % (gradenumber, result.status_message, labelclass, result.grade)
+                formatdict = {
+                    'gradenumber': 0,
+                    'headline': 'Error Message for %s' % result.serverip,
+                    'labelclass': 'label-default',
+                    'grade': result.grade,
+                    'comments': result.status_message,
+                }
+
                 continue
-        output += "<span style='display: none'>%s</span><span style='font-size: 36px'><span class='label %s'>%s</span></span>&nbsp;" % (gradenumber, labelclass, result.grade)
+
+        if 'comments' not in formatdict:
+            formatdict['comments'] = "No comments"
+        output += render_to_string('includes/format_result.html', formatdict)
     return output
 
