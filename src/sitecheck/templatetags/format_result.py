@@ -74,7 +74,8 @@ def format_result(value):
                     'grade': result.grade,
                     'comments': result.status_message,
                 }
-
+            else:
+                ### no results or comments yet
                 continue
 
         if 'comments' not in formatdict:
