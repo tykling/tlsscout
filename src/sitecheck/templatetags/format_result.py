@@ -72,14 +72,14 @@ def format_result(value):
                     'headline': 'Error Message for %s' % result.serverip,
                     'labelclass': 'label-default',
                     'grade': "X",
-                    'comments': result.status_message,
+                    'messages': result.status_message,
                 }
             else:
-                ### no results or comments yet
+                ### no results or messages yet
                 continue
 
-        if 'comments' not in formatdict:
-            formatdict['comments'] = "No comments"
+        if 'messages' not in formatdict:
+            formatdict['messages'] = "No messages"
         output += render_to_string('includes/format_result.html', formatdict)
     return output
 
