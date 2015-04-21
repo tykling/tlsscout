@@ -39,9 +39,9 @@ def StartScan(sitecheck):
     ### can this sitecheck be started?
     if sitecheck.urgent or not urgentonly:
         if sitecheck.urgent:
-            AddLogEntry(username='tlsscout engine', type='engine', event='starting urgent check of site %s' % sitecheck.site.hostname)
+            AddLogEntry(username='tlsscout engine', type='engine', event='Starting urgent check of site %s' % sitecheck.site.hostname)
         else:
-            AddLogEntry(username='tlsscout engine', type='engine', event='starting regular scheduled check of site %s' % sitecheck.site.hostname)
+            AddLogEntry(username='tlsscout engine', type='engine', event='Starting regular scheduled check of site %s' % sitecheck.site.hostname)
 
         ### make an API call to start the check
         hostinfo = Analyze(
