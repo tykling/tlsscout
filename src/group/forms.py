@@ -1,6 +1,5 @@
 from django import forms
 from group.models import Group
-import re
 from django.conf import settings
 
 ### add/edit group form

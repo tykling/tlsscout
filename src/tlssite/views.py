@@ -1,14 +1,12 @@
-from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponse, HttpResponseServerError
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from tlssite.models import Site
 from django.contrib.auth.decorators import login_required, user_passes_test
 from group.models import Group
 from tlssite.forms import SiteForm, DeleteSiteForm
 from django.core.urlresolvers import reverse, reverse_lazy
-from sitecheck.models import SiteCheck, SiteCheckResult
+from sitecheck.models import SiteCheck
 from tlsscout.decorators import logged_in_or_anon_allowed
-from django.conf import settings
-from ssllabs.wrappers import StartScan
 from django.contrib import messages
 from eventlog.utils import AddLogEntry
 

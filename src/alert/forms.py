@@ -1,6 +1,5 @@
 from django import forms
-from django.conf import settings
-from alert.models import SiteAlert, TagAlert, GroupAlert, AlertHistory
+from alert.models import SiteAlert, TagAlert, GroupAlert
 
 ### enable site alert form
 class EnableSiteAlertForm(forms.ModelForm):

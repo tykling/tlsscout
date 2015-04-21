@@ -1,14 +1,12 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
+from django.core.management.base import BaseCommand
 from django.utils import timezone
 from datetime import timedelta
 from sitecheck.models import SiteCheck, SiteCheckResult
 from ssllabs.wrappers import StartScan, GetResults
 from tlssite.models import Site
 from tlsscout.email import tlsscout_alert
-import os, socket, sys, datetime, atexit, json
-import tempfile
 from eventlog.utils import AddLogEntry
+import os, sys, datetime, atexit, json, tempfile
 
 class Command(BaseCommand):
     args = 'none'
