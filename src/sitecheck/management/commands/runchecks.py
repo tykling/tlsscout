@@ -47,7 +47,6 @@ class Command(BaseCommand):
     def __StartUrgentChecks(self):
         urgentchecks = SiteCheck.objects.filter(urgent=True, start_time__isnull=True, finish_time__isnull=True)
         for check in urgentchecks:
-            AddLogEntry(username='tlsscout engine', type='engine', event='starting urgent check of site %s' % check.site.hostname)
             StartScan(check)
 
 
@@ -58,7 +57,6 @@ class Command(BaseCommand):
             ### if this site has no checks at all start one now
             if SiteCheck.objects.filter(site=site).count() == 0:
                 ### start a new check
-                AddLogEntry(username='tlsscout engine', type='engine', event='starting regular check of site %s' % check.site.hostname)
                 check = SiteCheck(site=site)
                 check.save()
                 StartScan(check)
