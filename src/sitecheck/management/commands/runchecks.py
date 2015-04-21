@@ -92,7 +92,6 @@ class Command(BaseCommand):
 
         ### loop through them and check each to see if it is finished yet
         for check in runningchecks:
-            AddLogEntry(username='tlsscout engine', type='engine', event='Checking status of running check for site %s' % check.site.hostname)
             ### make an API call to see if the check has finished
             hostinfo = GetResults(check)
             if not hostinfo:
