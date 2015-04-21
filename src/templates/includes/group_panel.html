@@ -12,6 +12,7 @@
                     <th>Check Interval</th>
                     <th class="text-center">Sites</th>
                     <th class="text-center">Publish</th>
+                    <th class="text-center">Ignore Name Mismatch</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                         <td>{{ group.interval_hours }} hours</td>
                         <td class="text-center">{{ group.sites.count }}</td>
                         <td class="text-center">{% if group.publish %}<span class="label label-success"><i class="fa fa-check"></i> Yes</span>{% else %}<span class="label label-danger"><i class="fa fa-remove"></i> No</span>{% endif %}</td>
+                        <td class="text-center">{% if group.ignore_name_mismatch %}<span class="label label-success"><i class="fa fa-check"></i> Yes</span>{% else %}<span class="label label-danger"><i class="fa fa-remove"></i> No</span>{% endif %}</td>
                         <td>
                             <a href="{% url 'group_details' groupid=group.id %}" class="btn btn-info btn-xs"><i class="fa fa-search"></i> Details</a>
                             {% if user.is_authenticated %}

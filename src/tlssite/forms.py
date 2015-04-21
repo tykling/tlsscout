@@ -19,11 +19,6 @@ class SiteForm(forms.ModelForm):
         hostname = cleaned_data.get("hostname")
 
         if hostname[0:8] == "https://":
-            self._errors["hostname"] = self.error_class([u"please enter only hostnames, https:// is implied"])
-            del cleaned_data["hostname"]
-            return cleaned_data
-
-        if hostname[0:8] == "https://":
             self._errors["hostname"] = self.error_class([u"please enter only hostnames, and remember only https on port 443 is supported"])
             del cleaned_data["hostname"]
             return cleaned_data

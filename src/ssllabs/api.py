@@ -127,7 +127,7 @@ def Info():
     return infojson
 
 
-def Analyze(host, publish=None, startNew=None, fromCache=None, maxAge=None, all=None, sitecheck=None):
+def Analyze(host, publish=None, ignorename=None, startNew=None, fromCache=None, maxAge=None, all=None, sitecheck=None):
     ### start putting params together, host is required
     params = {'host': host}
     
@@ -139,6 +139,15 @@ def Analyze(host, publish=None, startNew=None, fromCache=None, maxAge=None, all=
             return False
         else:
             params['publish'] = publish
+    
+    ### ignorename parameter, should be "on" or "off"
+    if ignorename:
+        if publish != "on" and publish != "off":
+            # invalid option
+            print "invalid publish option"
+            return False
+        else:
+            params['ignoreMismatch'] = ignorename
     
     ### startNew parameter, only valid value is "on"
     if startNew:

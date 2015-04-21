@@ -14,7 +14,8 @@
                 {% csrf_token %}
                 {% include 'includes/formfields/textfield.html' with fieldname='name' label='Group Name:' formfield=form.name placeholder='Group Name (e.g. "Production Sites")' %}
                 {% include 'includes/formfields/numberfield.html' with fieldname='interval_hours' label='Interval in hours' formfield=form.interval_hours placeholder='Check Interval in hours' %}
-                {% include 'includes/formfields/booleanfield.html' with fieldname='publish' text='Publish' label='Publish checks of sites in this group on the SSL Labs website' formfield=form.alert %}
+                {% include 'includes/formfields/booleanfield.html' with fieldname='publish' text='Publish' label='Publish checks of sites in this group on the SSL Labs website' formfield=form.publish %}
+                {% include 'includes/formfields/booleanfield.html' with fieldname='ignore_name_mismatch' text='Ignore name' label='Ignore certificate name mismatches and perform check anyway' formfield=form.ignore_name_mismatch %}
                 {% url 'group_list' as cancelurl %}
                 {% include 'includes/formfields/submitcancel.html' with submittext='Create Group' canceltext='Cancel' cancelurl=cancelurl %}
             </fieldset>

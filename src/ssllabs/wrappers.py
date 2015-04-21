@@ -39,7 +39,14 @@ def StartScan(sitecheck):
     ### can this sitecheck be started?
     if sitecheck.urgent or not urgentonly:
         ### make an API call to start the check
-        hostinfo = Analyze(host=sitecheck.site.hostname, startNew="on", publish="on" if sitecheck.site.group.publish else "off", all="done", sitecheck=sitecheck)
+        hostinfo = Analyze(
+            host=sitecheck.site.hostname, 
+            startNew="on", 
+            publish="on" if sitecheck.site.group.publish else "off", 
+            ignorename="on" if sitecheck.site.group.ignore_name_mismatch else "off",
+            all="done", 
+            sitecheck=sitecheck
+        )
         sitecheck.start_time=timezone.now()
         sitecheck.json_result=json.dumps(hostinfo)
         if 'status' in hostinfo:

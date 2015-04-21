@@ -7,7 +7,7 @@ from django.conf import settings
 class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
-        fields = ('name', 'interval_hours', 'publish')
+        fields = ('name', 'interval_hours', 'publish', 'ignore_name_mismatch')
 
     def clean(self):
         ### get interval_hours from cleaned_data
