@@ -71,7 +71,7 @@ def format_result(value):
                     'gradenumber': 0,
                     'headline': 'Error Message for %s' % result.serverip,
                     'labelclass': 'label-default',
-                    'grade': result.grade,
+                    'grade': "X",
                     'comments': result.status_message,
                 }
             else:
