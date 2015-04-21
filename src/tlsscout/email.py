@@ -17,8 +17,8 @@ def tlsscout_alert(oldcheck, newcheck):
     try:
         subject = "tlsscout alert: Rating for site %s changed!" % oldcheck.site.hostname
         formatdict={
-            'oldresultstring': "/".join([result.grade for result in oldcheck.results.all()]),
-            'newresultstring': "/".join([result.grade for result in newcheck.results.all()]),
+            'oldresultstring': "/".join([result.grade for result in oldcheck.results.all()]) if oldcheck.results.all() else None,
+            'newresultstring': "/".join([result.grade for result in newcheck.results.all()]) if newcheck.results.all() else None,
             'site': oldcheck.site,
             'baseurl': 'https://%s' % current_site.domain,
         }
