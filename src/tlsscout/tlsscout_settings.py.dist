@@ -27,3 +27,5 @@ EMAIL_FROM='noreply@example.com'     # NOTE: this email is included in the usera
 # enable new accout creation / signups / registration?
 ENABLE_SIGNUP=True
 
+# pagination
+EVENTS_PER_PAGE=100
