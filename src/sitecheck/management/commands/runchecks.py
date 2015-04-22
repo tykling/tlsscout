@@ -183,8 +183,8 @@ class Command(BaseCommand):
         if SiteCheck.objects.filter(site=site, finish_time__isnull=False).count() > 1:
             ### get the two latest checks
             checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).order_by('-finish_time')[:2]
-            oldcheck = checks[0]
-            newcheck = checks[1]
+            newcheck = checks[0]
+            oldcheck = checks[1]
             
             ### compare the number of results
             oldresults = SiteCheckResult.objects.filter(sitecheck=oldcheck).order_by('grade')
