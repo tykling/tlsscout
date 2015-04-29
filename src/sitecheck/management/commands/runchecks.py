@@ -202,6 +202,9 @@ class Command(BaseCommand):
             for result in oldresults:
                 if result.grade != newresults[i].grade:
                     tlsscout_alert(oldcheck, newcheck)
+                    ### update last_change time
+                    site.last_change = datetime.datetime.now().replace(tzinfo=pytz.utc)
+                    site.save()
                     return
                 i+=1
 
