@@ -6,7 +6,7 @@ from ssllabs.wrappers import StartScan, GetResults
 from tlssite.models import Site
 from tlsscout.email import tlsscout_alert
 from eventlog.utils import AddLogEntry
-import os, sys, datetime, atexit, json, tempfile
+import os, sys, datetime, atexit, json, tempfile, pytz
 
 class Command(BaseCommand):
     args = 'none'
