@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [Unreleased][unreleased]
+## [0.3] - 2015-04-30
 ### Added
 - Event log showing configuration changes and engine actions
 - Add a way to disable signups in the config file 
@@ -69,6 +69,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.1] - 2015-03-28
 - Initial release
 
-[unreleased]: https://github.com/tykling/tlsscout/compare/v0.2...master
+[v0.3]: https://github.com/tykling/tlsscout/compare/v0.2...v0.3
 [v0.2]: https://github.com/tykling/tlsscout/compare/v0.1...v0.2
 [v0.1]: https://github.com/tykling/tlsscout/tree/v0.1
