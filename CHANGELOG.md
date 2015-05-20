@@ -6,6 +6,25 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Added
+- Nothing
+
+### Changed
+- More informative subject lines in alert emails
+
+### Deprecated
+- Nothing
+
+### Removed
+- Nothing
+
+### Fixed
+- Nothing
+
+### Security
+- Nothing
+
 
 ## [0.3] - 2015-04-30
 ### Added
@@ -69,6 +88,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.1] - 2015-03-28
 - Initial release
 
+[unreleased]: https://github.com/tykling/tlsscout/compare/v0.3...master
 [v0.3]: https://github.com/tykling/tlsscout/compare/v0.2...v0.3
 [v0.2]: https://github.com/tykling/tlsscout/compare/v0.1...v0.2
 [v0.1]: https://github.com/tykling/tlsscout/tree/v0.1

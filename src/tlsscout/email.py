@@ -15,10 +15,16 @@ def tlsscout_alert(oldcheck, newcheck):
     ### start putting the email together
     from_email = "%s <%s>" % (current_site.domain, settings.EMAIL_FROM)
     try:
-        subject = "tlsscout alert: Rating for site %s changed!" % oldcheck.site.hostname
+        oldresultstring = "None" if not oldcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in oldcheck.results.all()])
+        newresultstring = "None" if not newcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in newcheck.results.all()])
+        subject = "tlsscout alert: Rating for site %(hostname)s changed: %(oldresult)s -> %(newresult)s" % {
+            'hostname': oldcheck.site.hostname,
+            'oldresult': oldresultstring,
+            'newresult': newresultstring,
+        }
         formatdict={
-            'oldresultstring': "None" if not oldcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in oldcheck.results.all()]),
-            'newresultstring': "None" if not newcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in newcheck.results.all()]),
+            'oldresultstring': oldresultstring,
+            'newresultstring': newresultstring,
             'site': oldcheck.site,
             'baseurl': 'https://%s' % current_site.domain,
         }
