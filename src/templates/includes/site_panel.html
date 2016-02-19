@@ -8,6 +8,11 @@
     <div class="panel-heading"><h4>{{ headline|default:"Sites" }}</h4></div>
     <div class="panel-body">
 {% endif %}
+
+{% if user.is_authenticated %}
+    <p><a href="{% url 'site_add' %}" class="btn btn-success"><i class="fa fa-plus"></i> Add New Site</a></p>
+{% endif %}
+
 {% if not sites %}
     <p>No sites defined.</p>
 {% else %}
