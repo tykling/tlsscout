@@ -142,7 +142,7 @@ def Analyze(host, publish=None, ignorename=None, startNew=None, fromCache=None, 
     
     ### ignorename parameter, should be "on" or "off"
     if ignorename:
-        if publish != "on" and publish != "off":
+        if ignorename != "on" and ignorename != "off":
             # invalid option
             print "invalid publish option"
             return False
