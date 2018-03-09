@@ -57,8 +57,8 @@ def __ApiCall(method, payload=None, sitecheck=None):
 
     ### find out if we are supposed to be sleeping
     if apiclientstate.sleep_until:
-        if apiclientstate.sleep_until < timezone.now():
-            #print "API client should sleep until %s" % apiclientstate.sleep_until
+        if apiclientstate.sleep_until > timezone.now():
+            print "API client should sleep until %s" % apiclientstate.sleep_until
             return False
         else:
             ### done sleeping
