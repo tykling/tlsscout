@@ -7,6 +7,6 @@ class Group(models.Model):
     publish = models.BooleanField(default=True)
     ignore_name_mismatch = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from group.models import Group
 from group.forms import GroupForm, DeleteGroupForm, ScheduleGroupCheckForm
 from tlssite.models import Site
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from sitecheck.models import SiteCheck
 from tlsscout.decorators import logged_in_or_anon_allowed
 from django.contrib import messages

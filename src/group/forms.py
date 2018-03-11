@@ -18,13 +18,13 @@ class GroupForm(forms.ModelForm):
             try:
                 temp = float(interval_hours)
             except:
-                self._errors["interval_hours"] = self.error_class([u"Invalid input"])
+                self._errors["interval_hours"] = self.error_class(["Invalid input"])
                 del cleaned_data["interval_hours"]
                 return cleaned_data
             
             ### check if interval_hours is lower than the limit
             if interval_hours < settings.MIN_CHECK_INTERVAL_HOURS:
-                self._errors["interval_hours"] = self.error_class([u"The lowest permitted check interval is %s hours" % settings.MIN_CHECK_INTERVAL_HOURS])
+                self._errors["interval_hours"] = self.error_class(["The lowest permitted check interval is %s hours" % settings.MIN_CHECK_INTERVAL_HOURS])
                 del cleaned_data["interval_hours"]
                 return cleaned_data
             

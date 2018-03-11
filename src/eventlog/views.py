@@ -5,10 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 @login_required
-def EventList(request):
+def event_list(request):
     all_events = LogEntry.objects.all().order_by('-datetime')
     paginator = Paginator(all_events, settings.EVENTS_PER_PAGE)
-    
+
     page = request.GET.get('page')
     try:
         events = paginator.page(page)

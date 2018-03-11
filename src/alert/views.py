@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from tlssite.models import Site
 from group.models import Group
 from alert.models import SiteAlert, TagAlert, GroupAlert

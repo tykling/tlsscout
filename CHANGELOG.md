@@ -8,10 +8,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
-- Nothing
+- Django Channels
 
 ### Changed
 - More informative subject lines in alert emails
+- Switch to Python3
+- Upgrade Django to 2.0
+- Update all pip packages
 
 ### Deprecated
 - Nothing
@@ -20,7 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Nothing
 
 ### Fixed
-- Nothing
+- Bug that made sleeping sleep forever
 
 ### Security
 - Nothing

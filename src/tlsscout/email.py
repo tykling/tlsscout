@@ -35,6 +35,6 @@ def tlsscout_alert(oldcheck, newcheck):
         for recipient in oldcheck.site.get_alert_users().all():
             send_email(subject, from_email, recipient.email, text_content, html_content)
     except Exception as E:
-        print "exception while rendering and sending email: %s" % E
+        print("exception while rendering and sending email: %s" % E)
         return False
 

@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from tlssite.models import Site
 from django.contrib.auth.decorators import login_required, user_passes_test
 from tlsscout.decorators import logged_in_or_anon_allowed
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from taggit.models import Tag
 from django.contrib import messages
 from sitecheck.models import SiteCheck

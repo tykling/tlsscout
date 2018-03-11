@@ -19,18 +19,18 @@ class SiteForm(forms.ModelForm):
         hostname = cleaned_data.get("hostname")
 
         if hostname[0:8] == "https://":
-            self._errors["hostname"] = self.error_class([u"please enter only hostnames, and remember only https on port 443 is supported"])
+            self._errors["hostname"] = self.error_class(["please enter only hostnames, and remember only https on port 443 is supported"])
             del cleaned_data["hostname"]
             return cleaned_data
 
         if len(hostname) > 255:
-            self._errors["hostname"] = self.error_class([u"valid hostnames are limited to 255 characters"])
+            self._errors["hostname"] = self.error_class(["valid hostnames are limited to 255 characters"])
             del cleaned_data["hostname"]
             return cleaned_data
 
         allowed = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
         if not all(allowed.match(x) for x in hostname.split(".")):
-            self._errors["hostname"] = self.error_class([u"invalid hostname"])
+            self._errors["hostname"] = self.error_class(["invalid hostname"])
             del cleaned_data["hostname"]
             return cleaned_data
 

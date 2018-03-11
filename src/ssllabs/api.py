@@ -12,7 +12,7 @@ def __MakeRequest(url, payload=None, sitecheck=None):
     ua = 'tlsscout request %s (%s)' % (requestuuid, requests.utils.default_user_agent())
     headers = {
         'User-Agent': ua,
-        'From': settings.EMAIL_FROM
+        'From': settings.DEFAULT_FROM_EMAIL
     }
     r = requests.get(url, params=payload, headers=headers)
     __SaveRequest(request=r, sitecheck=sitecheck, uuid=requestuuid)
@@ -22,13 +22,13 @@ def __MakeRequest(url, payload=None, sitecheck=None):
 def __InitApiClient():
     ### Make an info call to get X-Max-Assessments and X-Current-Assessments
     r = __MakeRequest(settings.SSLLABS_APIURL + 'info')
-    
+
     if not 'X-Max-Assessments' in r.headers:
-        print "X-Max-Assessments missing from API response. Bailing out."
+        print("X-Max-Assessments missing from API response. Bailing out.")
         return False
-        
+
     if not 'X-Current-Assessments' in r.headers:
-        print "X-Current-Assessments missing from API response. Bailing out."
+        print("X-Current-Assessments missing from API response. Bailing out.")
         return False
 
     maxass = int(r.headers['X-Max-Assessments'])
@@ -52,13 +52,13 @@ def __ApiCall(method, payload=None, sitecheck=None):
         ### first API run. 
         apiclientstate = __InitApiClient()
         if not apiclientstate:
-            print "something went wrong while initializing the API client"
+            print("something went wrong while initializing the API client")
             return False
 
     ### find out if we are supposed to be sleeping
     if apiclientstate.sleep_until:
         if apiclientstate.sleep_until > timezone.now():
-            print "API client should sleep until %s" % apiclientstate.sleep_until
+            print("API client should sleep until %s" % apiclientstate.sleep_until)
             return False
         else:
             ### done sleeping
@@ -70,13 +70,13 @@ def __ApiCall(method, payload=None, sitecheck=None):
 
     ### check the response status code here
     if r.status_code == 400:
-        print "API returned HTTP 400: invocation error (e.g., invalid parameters)"
+        print("API returned HTTP 400: invocation error (e.g., invalid parameters)")
         return False
-    
+
     if r.status_code == 429:
         ### too many concurrent assessments from this IP
-        print "API returned HTTP 429: client request rate too high"
-        
+        print("API returned HTTP 429: client request rate too high")
+
         ### perhaps more than one SSL Labs API client are running from this ip?
         ### divide the current max_concurrent_assessments by two to accomodate
         apiclientstate.max_concurrent_assessments=apiclientstate.max_concurrent_assessments/2
@@ -86,20 +86,20 @@ def __ApiCall(method, payload=None, sitecheck=None):
 
     if r.status_code == 500:
         ### internal server error on the API server
-        print "API returned HTTP 500: internal error"
+        print("API returned HTTP 500: internal error")
         return False
 
     if r.status_code == 503:
         ### maintenance
-        print "API returned HTTP 503: the service is not available (e.g., down for maintenance)"
+        print("API returned HTTP 503: the service is not available (e.g., down for maintenance)")
         apiclientstate.sleep_until = timezone.now() + timedelta(minutes=15)
         apiclientstate.save()
         return False
 
     if r.status_code == 529:
         ### API service overloaded
-        print "API returned HTTP 529: the service is overloaded"
-        
+        print("API returned HTTP 529: the service is overloaded")
+
         ### API docs says to "randomize backoff time" on HTTP 529, so sleep between 30 and 60 minutes
         apiclientstate.sleep_until = timezone.now() + timedelta(minutes=randint(30,60))
         apiclientstate.save()
@@ -130,65 +130,65 @@ def Info():
 def Analyze(host, publish=None, ignorename=None, startNew=None, fromCache=None, maxAge=None, all=None, sitecheck=None):
     ### start putting params together, host is required
     params = {'host': host}
-    
+
     ### publish parameter, should be "on" or "off", API defaults to off
     if publish:
         if publish != "on" and publish != "off":
             # invalid option
-            print "invalid publish option"
+            print("invalid publish option")
             return False
         else:
             params['publish'] = publish
-    
+
     ### ignorename parameter, should be "on" or "off"
     if ignorename:
         if publish != "on" and publish != "off":
             # invalid option
-            print "invalid publish option"
+            print("invalid publish option")
             return False
         else:
             params['ignoreMismatch'] = ignorename
-    
+
     ### startNew parameter, only valid value is "on"
     if startNew:
         if startNew != "on":
-            print "invalid startNew value"
+            print("invalid startNew value")
             return False
         else:
             params['startNew'] = startNew
-    
+
     ### fromCache parameter, can be "on" or "off" and can't be used with startNew, API defaults to off
     if fromCache:
         if fromCache != "on" and fromCache != "off":
             # invalid option
-            print "invalid fromCache parameter"
+            print("invalid fromCache parameter")
             return False
         else:
             if startNew:
                 # invalid
-                print "fromCache can't be used with startNew"
+                print("fromCache can't be used with startNew")
                 return False
             params['fromCache'] = fromCache
-    
+
     ### maxAge parameter, maximum report age, in hours, if retrieving from cache (fromCache parameter set).
     if maxAge:
         if not fromCache or fromCache=="off":
             # invalid option
-            print "maxAge only makes sense when fromCache is on"
+            print("maxAge only makes sense when fromCache is on")
             return False
         else:
             params['maxAge'] = maxAge
-    
+
     ### all parameter, valid values "on" or "done"
     if all:
         if all != "on" and all != "done":
             # invalid option
-            print "invalid all option"
+            print("invalid all option")
             return False
         else:
             params['all'] = all
 
-    
+
     ### make request
     hostinfo = __ApiCall(method="analyze", payload=params, sitecheck=sitecheck) 
     return hostinfo
@@ -198,12 +198,12 @@ def GetEndpointData(host, s, fromCache):
     ### start putting params together, host and s is required
     params = {'host': host}
     params = {'s': s}
-    
+
     ### fromCache parameter, can be "on" or "off", API defaults to off
     if fromCache:
         if fromCache != "on" and fromCache != "off":
             # invalid option
-            print "invalid fromCache parameter"
+            print("invalid fromCache parameter")
             return False
         else:
             params['fromCache'] = fromCache

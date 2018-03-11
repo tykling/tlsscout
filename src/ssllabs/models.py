@@ -1,6 +1,6 @@
 from django.db import models
-from uuidfield import UUIDField
 from sitecheck.models import SiteCheck
+import uuid
 
 ### API client state
 class ApiClientState(models.Model):
@@ -9,9 +9,9 @@ class ApiClientState(models.Model):
 
 ### requestlog
 class RequestLog(models.Model):
-    sitecheck = models.ForeignKey(SiteCheck, related_name="requestlogs", null=True)
+    sitecheck = models.ForeignKey('sitecheck.SiteCheck', related_name="requestlogs", null=True, on_delete=models.PROTECT)
     datetime = models.DateTimeField(auto_now_add=True)
-    uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     request_url = models.CharField(max_length=1000)
     request_headers = models.TextField()
     request_body = models.TextField(null=True)
@@ -19,7 +19,7 @@ class RequestLog(models.Model):
     response_headers = models.TextField(null=True)
     response_body = models.TextField(null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s - %s" % (self.id, self.request_url, self.datetime)
 
     class Meta:

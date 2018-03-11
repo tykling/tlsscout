@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import models, migrations
 
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('grade', models.CharField(max_length=2, null=True)),
                 ('status_message', models.TextField(null=True)),
                 ('status_details_message', models.TextField(null=True)),
-                ('sitecheck', models.ForeignKey(related_name='results', to='sitecheck.SiteCheck')),
+                ('sitecheck', models.ForeignKey(related_name='results', to='sitecheck.SiteCheck', on_delete=models.PROTECT)),
             ],
             options={
             },

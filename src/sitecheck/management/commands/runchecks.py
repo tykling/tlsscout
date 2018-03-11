@@ -16,14 +16,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         pid = str(os.getpid())
         pidfile = os.path.join(tempfile.gettempdir(),"tlsscout-engine.pid")
-        
+
         if os.path.isfile(pidfile):
             self.stdout.write("%s already exists, exiting" % pidfile)
             sys.exit()
         else:
-            file(pidfile, 'w').write(pid)
+            with open(pidfile, 'w') as f:
+                f.write(pid)
             atexit.register(self.__RmPidFile, pidfile)
-    
+
         ### update the status of running checks first, to see if anything finished
         self.__UpdateRunningChecks()
 
@@ -64,7 +65,7 @@ class Command(BaseCommand):
             checks = SiteCheck.objects.filter(site=site, start_time__isnull=False, finish_time__isnull=True)
             if checks:
                 continue
-            
+
             ### this site has no currently running checks, see if one was added but never started
             ### (only one such check should ever exist)
             try:
@@ -185,7 +186,7 @@ class Command(BaseCommand):
             checks = SiteCheck.objects.filter(site=site, finish_time__isnull=False).order_by('-finish_time')[:2]
             newcheck = checks[0]
             oldcheck = checks[1]
-            
+
             ### compare the number of results
             oldresults = SiteCheckResult.objects.filter(sitecheck=oldcheck).order_by('grade')
             newresults = SiteCheckResult.objects.filter(sitecheck=newcheck).order_by('grade')
@@ -196,7 +197,7 @@ class Command(BaseCommand):
                 site.last_change = datetime.datetime.now().replace(tzinfo=pytz.utc)
                 site.save()
                 return
-            
+
             ### same number of results, compare the grade
             i=0
             for result in oldresults:

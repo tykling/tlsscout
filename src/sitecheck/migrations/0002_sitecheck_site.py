@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import models, migrations
 
@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sitecheck',
             name='site',
-            field=models.ForeignKey(related_name='checks', to='tlssite.Site'),
+            field=models.ForeignKey(related_name='checks', to='tlssite.Site', on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]
