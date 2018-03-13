@@ -98,8 +98,7 @@ class Command(BaseCommand):
             if not hostinfo:
                 ### something went wrong while running the check, error
                 check.status = "APIERROR"
-                check.status_message = "Something went wrong while running the check"
-                check.finish_time=timezone.now()
+                check.status_message = "Something went wrong while updating status this check"
             elif 'status' not in hostinfo:
                 ### hostinfo does not contain a status field, error
                 check.status = "APIERROR"
