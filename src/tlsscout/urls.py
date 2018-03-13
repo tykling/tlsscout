@@ -15,5 +15,6 @@ urlpatterns = [
     path('tags/', include('tag.urls')),
     path('alerts/', include('alert.urls')),
     path('events/', include('eventlog.urls')),
+    path('metrics/', include('metrics.urls')),
 ]
 

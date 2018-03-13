@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'alert',
     'tag',
     'eventlog',
+    'metrics',
 ]
 
 MIDDLEWARE = [
