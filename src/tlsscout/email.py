@@ -7,13 +7,13 @@ def send_email(subject, from_email, recipient, text_content, html_content):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [recipient])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-    
+
 def tlsscout_alert(oldcheck, newcheck):
     ### get hostname for this tlsscout instance (for use in the email)
     current_site = Site.objects.get_current()
-    
+
     ### start putting the email together
-    from_email = "%s <%s>" % (current_site.domain, settings.EMAIL_FROM)
+    from_email = "%s <%s>" % (current_site.domain, settings.DEFAULT_FROM_EMAIL)
     try:
         oldresultstring = "None" if not oldcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in oldcheck.results.all()])
         newresultstring = "None" if not newcheck.results.all() else "/".join([result.grade if result.grade else "X" for result in newcheck.results.all()])
@@ -30,7 +30,7 @@ def tlsscout_alert(oldcheck, newcheck):
         }
         text_content = render_to_string('emails/result_changed.txt', formatdict)
         html_content = render_to_string('emails/result_changed.html', formatdict)
-        
+
         ### find out who should receive this alert
         for recipient in oldcheck.site.get_alert_users().all():
             send_email(subject, from_email, recipient.email, text_content, html_content)
