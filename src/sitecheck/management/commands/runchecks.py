@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from sitecheck.models import SiteCheck, SiteCheckResult
 from ssllabs.wrappers import StartScan, GetResults
+from ssllabs.api import Info
 from tlssite.models import Site
 from tlsscout.email import tlsscout_alert
 from eventlog.utils import AddLogEntry
@@ -25,13 +26,22 @@ class Command(BaseCommand):
                 f.write(pid)
             atexit.register(self.__RmPidFile, pidfile)
 
+        ### check how many assessments are currently running from this IP,
+        ### may include more than just our own assessments
+        infojson = Info()
+        if not infojson:
+            print("Unable to run Info API call, we are sleeping or something is wrong")
+            return False
+
+        if infojson and infojson['currentAssessments'] == infojson['maxAssessments']:
+            print("currentAssessments == maxAssessments (which is %s) - can't start any more new assessments at this time, urgent or not" % infojson['maxAssessments'])
+            return False
+
         ### update the status of running checks first, to see if anything finished
         self.__UpdateRunningChecks()
 
-
         ### see if any new urgent checks need to be started
         self.__StartUrgentChecks()
-
 
         ### see if any regular new checks need to be started
         self.__StartRegularChecks()
@@ -77,13 +87,9 @@ class Command(BaseCommand):
 
             ### all checks for this site are finished, find the finish time of the latest completed check
             latestcheck = SiteCheck.objects.filter(site=site).latest('finish_time')
-            if latestcheck.finish_time + timedelta(hours=site.group.interval_hours) > timezone.now():
-                ### not yet
-                continue
-            else:
+            if latestcheck.finish_time + timedelta(hours=site.group.interval_hours) < timezone.now():
                 ### it is time to run a new check of this site
-                check = SiteCheck(site=site)
-                check.save()
+                check = SiteCheck.objects.create(site=site)
                 StartScan(check)
 
 

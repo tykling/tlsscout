@@ -8,13 +8,6 @@ import json
 
 
 def StartScan(sitecheck):
-    ### check how many assessments are currently running from this IP,
-    ### may include more than just our own assessments
-    infojson = Info()
-    if infojson and infojson['currentAssessments'] == infojson['maxAssessments']:
-        #print "can't start any more new assessments at this time, urgent or not"
-        return False
-    
     ### get apiclientstate from DB
     apiclientstate = ApiClientState.objects.get(id=1)
 
