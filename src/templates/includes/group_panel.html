@@ -30,7 +30,7 @@
                                 <a href="{% url 'group_edit' groupid=group.id %}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a>
                                 <a href="{% url 'group_delete' groupid=group.id %}" class="btn btn-danger btn-xs {% if group.sites.all %}disabled{% endif %}"><i class="fa fa-trash-o"></i> Delete</a> 
                                 {% if group|get_group_alerting:request.user %}
-                                    <a href="{% url 'disable_group_alert' alertid=group|get_group_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                                    <a href="{% url 'disable_group_alert' groupid=group.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
                                 {% else %}
                                     <a href="{% url 'enable_group_alert' groupid=group.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                                 {% endif %}

@@ -9,7 +9,7 @@
         <p>This group of sites is being checked every <b>{{ group.interval_hours }} hours</b>. Result publishing is <b>{% if group.publish %}enabled{% else %}not enabled{% endif %}</b> for sites in this group.</p>
         {% if user.is_authenticated %}
             {% if group|get_group_alerting:request.user %}
-                <p>Alerting for this group is enabled for your user <a href="{% url 'disable_group_alert' alertid=group|get_group_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a></p>
+                <p>Alerting for this group is enabled for your user <a href="{% url 'disable_group_alert' groupid=group.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a></p>
             {% else %}
                 <p>Alerting for this group is not enabled for your user <a href="{% url 'enable_group_alert' groupid=group.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a></p>
             {% endif %}

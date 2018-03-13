@@ -41,13 +41,13 @@
                     {% else %}
                         <td><span style='display: none'>{{ site.checks.all.0.finish_time|date:"U" }}</span>{{ site.checks.all.0.finish_time|naturaltime }}</td>
                     {% endif %}
-                    
+
                     {% if site.last_change %}
                         <td><span style='display: none'>{{ site.last_change|date:"U" }}</span>{{ site.last_change|naturaltime }}</td>
                     {% else %}
                         <td>n/a</td>
                     {% endif %}
-                    
+
                     {% if site.checks.all.0.start_time %}
                         {% if site.checks.all.0.results.all.count == 0 %}
                             {% if site.checks.count > 1 %}
@@ -65,7 +65,7 @@
                             <td>{{ site.checks.all.1.results.all|format_result|safe }}</td>
                         {% endif %}
                     {% endif %}
-                    
+
                     {% if site.checks.all.0.finish_time %}
                         <td><span style='display: none'>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|date:"U" }}</span>{{ site.checks.all.0.finish_time|relative_date_hours:site.group.interval_hours|naturaltime }}</td>
                     {% else %}
@@ -88,7 +88,7 @@
                         <a href="{% url 'site_delete' siteid=site.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a> 
                         <a href="{% url 'site_check' siteid=site.id %}" class="btn btn-warning btn-xs"><i class="fa fa-arrow-right"></i> Check!</a> 
                         {% if site|get_site_alerting:request.user %}
-                            <a href="{% url 'disable_site_alert' alertid=site|get_site_alerting:request.user %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
+                            <a href="{% url 'disable_site_alert' siteid=site.id %}" class="btn btn-danger btn-xs"><i class="fa fa-bell"></i> Disable</a> 
                         {% else %}
                             <a href="{% url 'enable_site_alert' siteid=site.id %}" class="btn btn-success btn-xs"><i class="fa fa-bell"></i> Enable</a> 
                         {% endif %}

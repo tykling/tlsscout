@@ -21,8 +21,7 @@ def enable_site_alert(request, siteid):
         messages.error(request, 'Alerting is already enabled for the site "%s"' % site.hostname)
     except SiteAlert.DoesNotExist:
         if form.is_valid():
-            alert = SiteAlert(user=request.user, site=site)
-            alert.save()
+            alert = SiteAlert.objects.create(user=request.user, site=site)
             messages.success(request, 'Alerting has now been enabled for the site "%s"' % site.hostname)
             AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user %s for the site %s' % (alert.user, site.hostname))
             return HttpResponseRedirect(reverse('site_details', kwargs={'siteid': site.id}))
@@ -34,8 +33,9 @@ def enable_site_alert(request, siteid):
 
 
 @login_required
-def disable_site_alert(request, alertid):
-    alert = get_object_or_404(SiteAlert, id=alertid)
+def disable_site_alert(request, siteid):
+    site = get_object_or_404(Site, id=siteid)
+    alert = SiteAlert.objects.get(user=request.user, site=site)
     form = DisableSiteAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
@@ -54,16 +54,15 @@ def disable_site_alert(request, alertid):
 @login_required
 def enable_tag_alert(request, tagslug):
     tag = get_object_or_404(Tag, slug=tagslug)
+    alert = TagAlert.objects.get(user=request.user, tag=tag)
     form = EnableTagAlertForm(request.POST or None)
 
     # check if alerting is already enabled for this tag
     try:
-        alert = TagAlert.objects.get(user=request.user, tag=tag)
         messages.error(request, 'Alerting is already enabled for the tag "%s"' % tag)
     except TagAlert.DoesNotExist:
         if form.is_valid():
-            alert = TagAlert(user=request.user, tag=tag)
-            alert.save()
+            alert = TagAlert.objects.create(user=request.user, tag=tag)
             messages.success(request, 'Alerting has now been enabled for the tag "%s"' % tag)
             AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user "%s" for the tag "%s"' % (alert.user, tag))
             return HttpResponseRedirect(reverse('tag_list'))
@@ -75,8 +74,9 @@ def enable_tag_alert(request, tagslug):
 
 
 @login_required
-def disable_tag_alert(request, alertid):
-    alert = get_object_or_404(TagAlert, id=alertid)
+def disable_tag_alert(request, tagslug):
+    tag = get_object_or_404(Tag, slug=tagslug)
+    alert = TagAlert.objects.get(user=request.user, tag=tag)
     form = DisableTagAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
@@ -103,8 +103,7 @@ def enable_group_alert(request, groupid):
         messages.error(request, 'Alerting is already enabled for the group "%s"' % group.name)
     except GroupAlert.DoesNotExist:
         if form.is_valid():
-            alert = GroupAlert(user=request.user, group=group)
-            alert.save()
+            alert = GroupAlert.objects.create(user=request.user, group=group)
             messages.success(request, 'Alerting has now been enabled for the group "%s"' % group.name)
             AddLogEntry(username=request.user, type='configchange', event='Enabled alerting for the user "%s" for the group "%s"' % (alert.user, group.name))
             return HttpResponseRedirect(reverse('group_details', kwargs={'groupid': group.id}))
@@ -116,8 +115,9 @@ def enable_group_alert(request, groupid):
 
 
 @login_required
-def disable_group_alert(request, alertid):
-    alert = get_object_or_404(GroupAlert, id=alertid)
+def disable_group_alert(request, groupid):
+    group = get_object_or_404(Group, id=groupid)
+    alert = GroupAlert.objects.get(user=request.user, group=group)
     form = DisableGroupAlertForm(request.POST or None, instance=alert)
 
     if form.is_valid():
