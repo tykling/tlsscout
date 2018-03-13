@@ -30,7 +30,7 @@
           {% if user.is_authenticated %}
           <span class="navbar-text bg-info"><b>{% if pendingchecks %} Pending: {{ pendingchecks }}{% endif %}{% if runningchecks %} Running: {{ runningchecks }} {% endif %}</b></span>
             {% if apiclientstate.sleep_until %}
-              <span class="navbar-text bg-danger"><b>SSLLabs API overloaded. Sleeping until {{ apiclientstate.sleep_until }}</b></span>
+              <span class="navbar-text bg-danger"><b>SSLLabs API sleeping until {{ apiclientstate.sleep_until }}</b></span>
             {% endif %}
           {% endif %}
           <ul class="nav navbar-nav navbar-right">
