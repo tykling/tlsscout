@@ -28,7 +28,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% include "includes/menutabs.html" %}
           {% if user.is_authenticated and apiclientstate.sleep_until %}
-          <span class="navbar-text bg-danger"><b>SSLLabs API overloaded. Sleeping sleeping until {{ apiclientstate.sleep_until }} UTC</b></span>
+          <span class="navbar-text bg-danger"><b>SSLLabs API overloaded. Sleeping sleeping until {{ apiclientstate.sleep_until }}</b></span>
           {% endif %}
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
