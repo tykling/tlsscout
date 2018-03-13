@@ -27,8 +27,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           {% include "includes/menutabs.html" %}
-          {% if user.is_authenticated and apiclientstate.sleep_until %}
-          <span class="navbar-text bg-danger"><b>SSLLabs API overloaded. Sleeping until {{ apiclientstate.sleep_until }}.</b></span>
+          {% if user.is_authenticated %}
+          <span class="navbar-text bg-info"><b>{% if pendingchecks %} Pending: {{ pendingchecks }}{% endif %}{% if runningchecks %} Running: {{ runningchecks }} {% endif %}</b></span>
+            {% if apiclientstate.sleep_until %}
+              <span class="navbar-text bg-danger"><b>SSLLabs API overloaded. Sleeping until {{ apiclientstate.sleep_until }}</b></span>
+            {% endif %}
           {% endif %}
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}

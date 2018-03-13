@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'ssllabs.context_processors.apiclientstate_processor',
+                'sitecheck.context_processors.sitecheck_processor',
             ],
         },
     },
