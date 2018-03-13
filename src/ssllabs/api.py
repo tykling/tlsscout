@@ -3,6 +3,7 @@ from django.utils import timezone
 from ssllabs.models import ApiClientState, RequestLog
 import requests, json, uuid
 from random import randint
+from datetime import timedelta
 
 # SSL Labs API documentation: 
 # https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs.md
