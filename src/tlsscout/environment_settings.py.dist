@@ -34,7 +34,7 @@ DEFAULT_FROM_EMAIL='{{ django_email_from }}' # NOTE: this email is included in t
 ADMINS={{ django_admins }}
 
 # enable new accout creation / signups / registration?
-ENABLE_SIGNUP=True
+ENABLE_SIGNUP={{ tlsscout_enable_signup }}
 
 # pagination
 EVENTS_PER_PAGE=100
