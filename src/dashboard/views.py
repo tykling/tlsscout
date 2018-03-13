@@ -10,5 +10,6 @@ def dashboard(request):
         return render(request, 'frontpage.html', {
             'SSLLABS_SCANNERURL': settings.SSLLABS_SCANNERURL,
             'SSLLABS_TERMSURL': settings.SSLLABS_TERMSURL,
+            'ENABLE_SIGNUP': settings.ENABLE_SIGNUP,
         })
 

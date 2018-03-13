@@ -33,7 +33,7 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 #EMAIL_FROM='noreply@example.com'     # NOTE: this email is included in the useragent when using the SSL Labs API
 
 # enable new accout creation / signups / registration?
-ENABLE_SIGNUP=True
+ENABLE_SIGNUP=False
 
 # pagination
 EVENTS_PER_PAGE=100
