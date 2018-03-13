@@ -54,7 +54,7 @@ def StartScan(sitecheck):
         )
         sitecheck.start_time=timezone.now()
         sitecheck.json_result=json.dumps(hostinfo)
-        if 'status' in hostinfo:
+        if hostinfo and 'status' in hostinfo:
             if 'statusMessage' in hostinfo:
                 sitecheck.status_message = "%s: %s" % (hostinfo['status'], hostinfo['statusMessage'])
             else:
