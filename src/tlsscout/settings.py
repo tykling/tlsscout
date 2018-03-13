@@ -132,3 +132,7 @@ MIN_CHECK_INTERVAL_HOURS = 24
 # allow anonymous / unauthenticated users to view data without logging in ?
 ALLOW_ANONYMOUS_VIEWING = True
 
+# disable signups in allauth as needed
+if not ENABLE_SIGNUP:
+  ACCOUNT_ADAPTER = 'tlsscout.adapters.SignupDisabledAdapter'
+
