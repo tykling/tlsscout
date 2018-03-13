@@ -30,7 +30,7 @@ class Command(BaseCommand):
         ### may include more than just our own assessments
         infojson = Info()
         if not infojson:
-            print("Unable to run Info API call, we are sleeping or something is wrong")
+            #print("Unable to run Info API call, we are sleeping or something is wrong")
             return False
 
         if infojson and infojson['currentAssessments'] == infojson['maxAssessments']:
