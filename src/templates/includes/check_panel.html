@@ -32,15 +32,17 @@
                         {% endif %}
                     </tr>
                     {% if check.results.all.count > 1 %}
-                        {% for result in check.results.all|slice:"1:" %}
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>{{ result.serverip }}</td>
-                            <td>{{ result|format_result|safe }}</td>
-                        </tr>
+                        {% for result in check.results.all %}
+                            {% if result.serverip != check.results.all.0.serverip %}
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>{{ result.serverip }}</td>
+                                    <td>{{ result|format_result|safe }}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
