@@ -121,7 +121,7 @@ def __SaveRequest(request, sitecheck, uuid):
     )
     requestlog.save()
 
-    
+
 def Info():
     infojson = __ApiCall("info")
     return infojson
@@ -142,9 +142,9 @@ def Analyze(host, publish=None, ignorename=None, startNew=None, fromCache=None, 
 
     ### ignorename parameter, should be "on" or "off"
     if ignorename:
-        if publish != "on" and publish != "off":
+        if ignorename != "on" and ignorename != "off":
             # invalid option
-            print("invalid publish option")
+            print("invalid ignorename option")
             return False
         else:
             params['ignoreMismatch'] = ignorename
