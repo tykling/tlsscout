@@ -33,6 +33,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user"></i> {{ user }} <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="{% url 'account_email' %}"><i class="fa fa-envelope"></i> Manage Emails</a></li>
+                    <li><a href="{% url 'account_change_password' %}"><i class="fa fa-envelope"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> Sign Out</a></li>
                   </ul>
