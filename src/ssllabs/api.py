@@ -15,7 +15,10 @@ def __MakeRequest(url, payload=None, sitecheck=None):
         'User-Agent': ua,
         'From': settings.DEFAULT_FROM_EMAIL
     }
-    r = requests.get(url, params=payload, headers=headers)
+    try:
+        r = requests.get(url, params=payload, headers=headers)
+    except requests.exceptions.ConnectionError:
+        return False
     __SaveRequest(request=r, sitecheck=sitecheck, uuid=requestuuid)
     return r
 
@@ -68,6 +71,9 @@ def __ApiCall(method, payload=None, sitecheck=None):
 
     ### make an ssllabs API call
     r = __MakeRequest(settings.SSLLABS_APIURL + method, payload=payload, sitecheck=sitecheck)
+    if not r:
+        print("HTTP request failed, __ApiCall returning False")
+        return False
 
     ### check the response status code here
     if r.status_code == 400:
