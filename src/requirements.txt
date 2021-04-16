@@ -12,7 +12,7 @@ defusedxml==0.5.0
 Django==2.0.3
 django-allauth==0.35.0
 django-bootstrap-form==3.3
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.11.1
 django-taggit==0.22.2
 django-uuidfield==0.5.0
 hyperlink==18.0.0
