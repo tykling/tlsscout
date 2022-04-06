@@ -26,7 +26,7 @@ requests==2.18.4
 requests-oauthlib==0.8.0
 six==1.11.0
 sqlparse==0.2.4
-Twisted==17.9.0
+Twisted==22.2.0
 txaio==2.9.0
 urllib3==1.22
 zope.interface==4.4.3
