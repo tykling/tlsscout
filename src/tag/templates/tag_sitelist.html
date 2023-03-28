@@ -1,6 +1,0 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% block head_title %}{{ tag }}{% endblock head_title %}
-{% block content %}
-{% include 'includes/site_panel.html' with sites=sites headline="Sites tagged '"|add:tag.name|add:"'" %}
-{% endblock content %}

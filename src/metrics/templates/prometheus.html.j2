@@ -1,7 +1,0 @@
-{% for metric, data in metrics.items %}# HELP {{ metric }} {{ data.help }}
-# TYPE {{ metric }} {{ data.type }}
-{% for value in data.values %}{% if 'labels' in value %}{{ metric }}{{ value.labels }} {{ value.value }}
-{% else %}{{ metric }} {{ value.value }}{% endif %}{% endfor %}
-
-{% endfor %}
-
